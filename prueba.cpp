@@ -2,9 +2,10 @@
 #include <fstream>
 using namespace std;
 
+// Clase Jugador
 class Jugador
 {
-private:
+public:
     string equipo;
     string nombre;
     string apellido;
@@ -12,27 +13,11 @@ private:
     int experiencia;
     int goles;
     string estado;
-
-public:
     Jugador(string, string, string, string, int, int, string);
     Jugador() = default;
-    string getEquipo();
-    string getNombre();
-    string getApellido();
-    string getPosicion();
-    int getExperiencia();
-    int getGoles();
-    string getEstado();
-    void setEquipo(string);
-    void setNombre(string);
-    void setApellido(string);
-    void setPosicion(string);
-    void setExperiencia(int);
-    void setGoles(int);
-    void setEstado(string);
     friend ostream &operator<<(ostream &os, const Jugador &obj)
     {
-        os << "Jugador| Equipo: " << obj.equipo << ", Nombre: " << obj.nombre << ", Apellido: " << obj.apellido << ", Posición: " << obj.posicion << ", Experiencia: " << obj.experiencia << ", Goles: " << obj.goles << ", Estado: " << obj.estado << endl;
+        os << "Jugador| Equipo: " << obj.equipo << ", Nombre: " << obj.nombre << ", Apellido: " << obj.apellido << ", Posición: " << obj.posicion << ", Experiencia: " << obj.experiencia << ", Goles: " << obj.goles << ", Estado: " << obj.estado;
         return os;
     }
 };
@@ -48,77 +33,46 @@ Jugador::Jugador(string _equipo, string _nombre, string _apellido, string _posic
     estado = _estado;
 };
 
-string Jugador::getEquipo()
+// Clase Director Tecnico
+class DirectorTecnico
 {
-    return equipo;
-}
+public:
+    DirectorTecnico(string, string, int);
+    DirectorTecnico() = default;
+    string nombre;
+    string apellido;
+    int experiencia;
+    friend ostream &operator<<(ostream &os, const DirectorTecnico &obj)
+    {
+        os << "Director Técnico| Nombre: " << obj.nombre << ", Apellido: " << obj.apellido << ", Experiencia: " << obj.experiencia;
+        return os;
+    }
+};
 
-string Jugador::getNombre()
-{
-    return nombre;
-}
-
-string Jugador::getApellido()
-{
-    return apellido;
-}
-
-string Jugador::getPosicion()
-{
-    return posicion;
-}
-
-int Jugador::getExperiencia()
-{
-    return experiencia;
-}
-
-int Jugador::getGoles()
-{
-    return goles;
-}
-
-string Jugador::getEstado()
-{
-    return estado;
-}
-
-void Jugador::setEquipo(string _equipo)
-{
-    equipo = _equipo;
-}
-
-void Jugador::setNombre(string _nombre)
+DirectorTecnico::DirectorTecnico(string _nombre, string _apellido, int _experiencia)
 {
     nombre = _nombre;
-}
-
-void Jugador::setApellido(string _apellido)
-{
     apellido = _apellido;
-}
-
-void Jugador::setPosicion(string _posicion)
-{
-    posicion = _posicion;
-}
-
-void Jugador::setExperiencia(int _experiencia)
-{
     experiencia = _experiencia;
+};
+
+class Equipo {
+public:
+    Equipo(string, Jugador[], int);
+    Equipo() = default;
+    string nombre;
+    Jugador jugadores[20];
+};
+
+Equipo::Equipo(string _nombre, Jugador _jugadores[], int n) {
+    nombre = _nombre;
+    for (int i = 0; i < n; i++) {
+        jugadores[i] = _jugadores[i];
+    }
 }
 
-void Jugador::setGoles(int _goles)
-{
-    goles = _goles;
-}
-
-void Jugador::setEstado(string _estado)
-{
-    estado = _estado;
-}
-
-void procesarEntrada(string entrada, string equipos[], int &equiposLongitud, string jugadores[], int &jugadoresLongitud, string directores[], int &directoresLongitud)
+// Procesar archivo entrada.in
+void procesarEntrada(string entrada, string equiposPrev[], int &equiposPrevLongitud, string jugadoresPrev[], int &jugadoresPrevLongitud, string directoresPrev[], int &directoresPrevLongitud)
 {
     ifstream archivoEntrada;
     archivoEntrada.open(entrada);
@@ -142,24 +96,25 @@ void procesarEntrada(string entrada, string equipos[], int &equiposLongitud, str
         }
         if (add == "equipo")
         {
-            equipos[equiposLongitud++] = linea;
+            equiposPrev[equiposPrevLongitud++] = linea;
         }
         if (add == "jugador")
         {
-            jugadores[jugadoresLongitud++] = linea;
+            jugadoresPrev[jugadoresPrevLongitud++] = linea;
         }
         if (add == "directorTecnico")
         {
-            directores[directoresLongitud++] = linea;
+            directoresPrev[directoresPrevLongitud++] = linea;
         }
     }
 };
 
-void identificarJugador(string jugador, string equipos[], int equiposLongitud, string &equipoJugador, string &nombreJugador, string &apellidoJugador, string &posicionJugador, string &experienciaJugador)
+// Procesar Datos de Línea de Jugadores Y Añadirlos a su Equipo
+void identificarJugador(string jugador, string equiposPrev[], int equiposPrevLongitud, string &equipoJugador, string &nombreJugador, string &apellidoJugador, string &posicionJugador, string &experienciaJugador)
 {
-    for (int i = 0; i < equiposLongitud; i++)
+    for (int i = 0; i < equiposPrevLongitud; i++)
     {
-        string equipo = equipos[i];
+        string equipo = equiposPrev[i];
         if (jugador.find(equipo) != string::npos)
         {
             equipoJugador = equipo;
@@ -184,62 +139,108 @@ void identificarJugador(string jugador, string equipos[], int equiposLongitud, s
         {
             apellidoJugador += caracter;
         }
-        if (addJugador == 3)
+        else if (addJugador == 3)
         {
             posicionJugador += caracter;
         }
-        if (addJugador == 4)
+        else if (addJugador == 4)
         {
             experienciaJugador += caracter;
         }
     }
 }
 
+// Procesar Datos de Línea de Directores Tecnicos
+void identificarDirectorTecnico(string directorTecnico, string &nombreDirectorTecnico, string &apellidoDirectorTecnico, string &experienciaDirectorTecnico)
+{
+    int addDirectorTecnico = 1;
+
+    for (char caracter : directorTecnico)
+    {
+        if (caracter == ' ')
+        {
+            addDirectorTecnico++;
+            continue;
+        }
+        if (addDirectorTecnico == 1)
+        {
+            nombreDirectorTecnico += caracter;
+        }
+        else if (addDirectorTecnico == 2)
+        {
+            apellidoDirectorTecnico += caracter;
+        }
+        else if (addDirectorTecnico == 3)
+        {
+            experienciaDirectorTecnico += caracter;
+        }
+    }
+}
+ 
 int main()
 {
-    string equipos[20];
-    string jugadores[200];
-    string directores[30];
-    int equiposLongitud = 0, jugadoresLongitud = 0, directoresLongitud = 0;
-    procesarEntrada("entrada.in", equipos, equiposLongitud, jugadores, jugadoresLongitud, directores, directoresLongitud);
-    string equipoJugador = "";
-    string nombreJugador = "";
-    string apellidoJugador = "";
-    string posicionJugador = "";
-    string experienciaJugador = "";
+    // Jugador *jugadoresEjemplo = new Jugador[5];
+    // Jugador jugadoresEjemplo[5];
+    // Equipo equipoEjemplo("Equipo 1", jugadoresEjemplo, 5);
+    string equiposPrev[20];
+    string jugadoresPrev[100];
+    string directoresPrev[30];
+    int equiposPrevLongitud = 0, jugadoresPrevLongitud = 0, directoresPrevLongitud = 0;
+    procesarEntrada("entrada.in", equiposPrev, equiposPrevLongitud, jugadoresPrev, jugadoresPrevLongitud, directoresPrev, directoresPrevLongitud);
+    string equipoJugador, nombreJugador, apellidoJugador, posicionJugador, experienciaJugador, nombreDirectorTecnico, apellidoDirectorTecnico, experienciaDirectorTecnico;
+    equipoJugador = nombreJugador = apellidoJugador = posicionJugador = experienciaJugador = nombreDirectorTecnico = apellidoDirectorTecnico = experienciaDirectorTecnico = "";
+
+    // Crear lista de objetos de jugadores
+    Jugador *jugadores = new Jugador[100];
+    
+    int jugadoresLongitud = 0;
+    for (int i = 0; i < jugadoresPrevLongitud; i++)
+    {
+        identificarJugador(jugadoresPrev[i], equiposPrev, equiposPrevLongitud, equipoJugador, nombreJugador, apellidoJugador, posicionJugador, experienciaJugador);
+        Jugador jugador = Jugador(equipoJugador, nombreJugador, apellidoJugador, posicionJugador, stoi(experienciaJugador), 0, "Incorporado");
+        jugadores[i] = jugador;
+        jugadoresLongitud++;
+        equipoJugador = nombreJugador = apellidoJugador = posicionJugador = experienciaJugador = "";
+    }
+
+    // Crear lista de objetos de equipos
+    Equipo *equipos = new Equipo[20];
+
+    // Crear lista de objetos de Directores Tecnicos
+    DirectorTecnico *directores = new DirectorTecnico[30];
+    int directoresLongitud = 0;
+    for (int i = 0; i < directoresPrevLongitud; i++)
+    {
+        identificarDirectorTecnico(directoresPrev[i], nombreDirectorTecnico, apellidoDirectorTecnico, experienciaDirectorTecnico);
+        DirectorTecnico director = DirectorTecnico(nombreDirectorTecnico, apellidoDirectorTecnico, stoi(experienciaDirectorTecnico));
+        directores[i] = director;
+        directoresLongitud++;
+        nombreDirectorTecnico = apellidoDirectorTecnico = experienciaDirectorTecnico = "";
+    }
+
+// Imprimir Equipos
+    cout << "EQUIPOS" << endl;
+
+    for (int i = 0; i < equiposPrevLongitud; i++)
+    {
+        cout << equiposPrev[i] << endl;
+    }
+
+// Imprimir Jugadores
+    cout << "\nJUGADORES" << endl;
 
     for (int i = 0; i < jugadoresLongitud; i++)
     {
-        identificarJugador(jugadores[i], equipos, equiposLongitud, equipoJugador, nombreJugador, apellidoJugador, posicionJugador, experienciaJugador);
-        Jugador jugador = Jugador(equipoJugador, nombreJugador, apellidoJugador, posicionJugador, stoi(experienciaJugador), 0, "Incorporado");
-        cout << jugador << endl;
-        equipoJugador = "";
-        nombreJugador = "";
-        apellidoJugador = "";
-        posicionJugador = "";
-        experienciaJugador = "";
+        cout << jugadores[i] << endl;
     }
 
-    // cout << "EQUIPOS" << endl;
+// Imprimir Directores Tecnicos
+    cout << "\nDIRECTORES TÉCNICOS" << endl;
 
-    // for (int i = 0; i < equiposLongitud; i++)
-    // {
-    //     cout << equipos[i] << endl;
-    // }
-
-    // cout << "\nJUGADORES" << endl;
-
-    // for (int i = 0; i < jugadoresLongitud; i++)
-    // {
-    //     cout << jugadores[i] << endl;
-    // }
-
-    // cout << "\nDIRECTORES TÉCNICOS" << endl;
-
-    // for (int i = 0; i < directoresLongitud; i++)
-    // {
-    //     cout << directores[i] << endl;
-    // }
+    for (int i = 0; i < directoresLongitud; i++)
+    {
+        cout << directores[i] << endl;
+    }
 
     return 0;
 }

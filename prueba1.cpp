@@ -114,6 +114,7 @@ class DirectorTecnico
 {
 public:
     DirectorTecnico(string, string, int);
+    DirectorTecnico() = default;
     string nombre;
     string apellido;
     int experiencia;
