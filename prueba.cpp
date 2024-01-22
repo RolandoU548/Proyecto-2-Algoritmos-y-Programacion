@@ -56,17 +56,32 @@ DirectorTecnico::DirectorTecnico(string _nombre, string _apellido, int _experien
     experiencia = _experiencia;
 };
 
-class Equipo {
+// Clase Equipo
+class Equipo
+{
 public:
     Equipo(string, Jugador[], int);
     Equipo() = default;
     string nombre;
     Jugador jugadores[20];
+    int cantidadJugadores;
+    friend ostream &operator<<(ostream &os, const Equipo &obj)
+    {
+        os << "Equipo| Nombre: " << obj.nombre << ", Cantidad de jugadores: " << obj.cantidadJugadores << ", Jugadores: ";
+        for (int i = 0; i < obj.cantidadJugadores; i++)
+        {
+            os << obj.jugadores[i].nombre << " " <<  obj.jugadores[i].apellido << ((i == obj.cantidadJugadores-1) ? ". " : ", ");
+        }
+        return os;
+    }
 };
 
-Equipo::Equipo(string _nombre, Jugador _jugadores[], int n) {
+Equipo::Equipo(string _nombre, Jugador _jugadores[], int _cantidadJugadores)
+{
     nombre = _nombre;
-    for (int i = 0; i < n; i++) {
+    cantidadJugadores = _cantidadJugadores;
+    for (int i = 0; i < _cantidadJugadores; i++)
+    {
         jugadores[i] = _jugadores[i];
     }
 }
@@ -176,7 +191,7 @@ void identificarDirectorTecnico(string directorTecnico, string &nombreDirectorTe
         }
     }
 }
- 
+
 int main()
 {
     // Jugador *jugadoresEjemplo = new Jugador[5];
@@ -192,7 +207,7 @@ int main()
 
     // Crear lista de objetos de jugadores
     Jugador *jugadores = new Jugador[100];
-    
+
     int jugadoresLongitud = 0;
     for (int i = 0; i < jugadoresPrevLongitud; i++)
     {
@@ -204,7 +219,26 @@ int main()
     }
 
     // Crear lista de objetos de equipos
-    Equipo *equipos = new Equipo[20];
+    Equipo equipos[20];
+    int equiposLongitud = equiposPrevLongitud;
+    // for (string equipo : equiposPrev)
+    for (int i = 0; i < equiposPrevLongitud; i++)
+    {
+        string equipo = equiposPrev[i];
+        Jugador *jugadoresAux = new Jugador[100];
+        int jugadoresPorEquipo = 0, indiceJugador = 0;
+        for (int j = 0; j < jugadoresLongitud; j++)
+        {
+            if (equipo == jugadores[j].equipo)
+            {
+                jugadoresPorEquipo++;
+                jugadoresAux[indiceJugador] = Jugador(jugadores[j].equipo, jugadores[j].nombre, jugadores[j].apellido, jugadores[j].posicion, jugadores[j].experiencia, jugadores[j].goles, jugadores[j].estado);
+                indiceJugador++;
+            }
+        }
+        Equipo equipoAux(equipo, jugadoresAux, jugadoresPorEquipo);
+        equipos[i] = equipoAux;
+    }
 
     // Crear lista de objetos de Directores Tecnicos
     DirectorTecnico *directores = new DirectorTecnico[30];
@@ -218,15 +252,24 @@ int main()
         nombreDirectorTecnico = apellidoDirectorTecnico = experienciaDirectorTecnico = "";
     }
 
-// Imprimir Equipos
+    // Imprimir Equipos
     cout << "EQUIPOS" << endl;
 
-    for (int i = 0; i < equiposPrevLongitud; i++)
+    for (int i = 0; i < equiposLongitud; i++)
     {
-        cout << equiposPrev[i] << endl;
+        cout << equipos[i] << endl;
+        // for (int j = 0; j < equipos[i].cantidadJugadores; j++)
+        // {
+        //     cout << equipos[i].jugadores[j] << endl;
+        // }
     }
 
-// Imprimir Jugadores
+    // for (int i = 0; i < equiposPrevLongitud; i++)
+    // {
+    //     cout << equiposPrev[i] << endl;
+    // }
+
+    // Imprimir Jugadores
     cout << "\nJUGADORES" << endl;
 
     for (int i = 0; i < jugadoresLongitud; i++)
@@ -234,7 +277,7 @@ int main()
         cout << jugadores[i] << endl;
     }
 
-// Imprimir Directores Tecnicos
+    // Imprimir Directores Tecnicos
     cout << "\nDIRECTORES TÉCNICOS" << endl;
 
     for (int i = 0; i < directoresLongitud; i++)
