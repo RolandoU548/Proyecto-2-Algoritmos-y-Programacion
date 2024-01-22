@@ -67,10 +67,10 @@ public:
     int cantidadJugadores;
     friend ostream &operator<<(ostream &os, const Equipo &obj)
     {
-        os << "Equipo| Nombre: " << obj.nombre << ", Cantidad de jugadores: " << obj.cantidadJugadores << ", Jugadores: ";
+        os << "Equipo| Nombre: " << obj.nombre << ", Cantidad de Jugadores: " << obj.cantidadJugadores << ", Jugadores: ";
         for (int i = 0; i < obj.cantidadJugadores; i++)
         {
-            os << obj.jugadores[i].nombre << " " <<  obj.jugadores[i].apellido << ((i == obj.cantidadJugadores-1) ? ". " : ", ");
+            os << obj.jugadores[i].nombre << " " << obj.jugadores[i].apellido << ((i == obj.cantidadJugadores - 1) ? ". " : ", ");
         }
         return os;
     }
@@ -194,9 +194,6 @@ void identificarDirectorTecnico(string directorTecnico, string &nombreDirectorTe
 
 int main()
 {
-    // Jugador *jugadoresEjemplo = new Jugador[5];
-    // Jugador jugadoresEjemplo[5];
-    // Equipo equipoEjemplo("Equipo 1", jugadoresEjemplo, 5);
     string equiposPrev[20];
     string jugadoresPrev[100];
     string directoresPrev[30];
@@ -258,16 +255,7 @@ int main()
     for (int i = 0; i < equiposLongitud; i++)
     {
         cout << equipos[i] << endl;
-        // for (int j = 0; j < equipos[i].cantidadJugadores; j++)
-        // {
-        //     cout << equipos[i].jugadores[j] << endl;
-        // }
     }
-
-    // for (int i = 0; i < equiposPrevLongitud; i++)
-    // {
-    //     cout << equiposPrev[i] << endl;
-    // }
 
     // Imprimir Jugadores
     cout << "\nJUGADORES" << endl;
@@ -285,5 +273,374 @@ int main()
         cout << directores[i] << endl;
     }
 
+    // MENU PRINCIPAL
+    int opcion1 = 0;
+    int opcion2 = 0;
+    int opcion3 = 0;
+    int opcion4 = 0;
+
+    while (opcion1 != 5)
+    {
+        cout << "MENÚ PRINCIPAL" << endl;
+        cout << "1. Equipos" << endl;
+        cout << "2. Jugadores" << endl;
+        cout << "3. Directores Técnicos" << endl;
+        cout << "4. Partidos" << endl;
+        cout << "5. Salir" << endl;
+        cout << "Elige una opción: ";
+        cin >> opcion1;
+
+        switch (opcion1)
+        {
+        case 1: // Equipos
+            while (opcion2 != 5)
+            {
+                cout << "\nSUBMENÚ - Equipos" << endl;
+                cout << "1. Agregar" << endl;
+                cout << "2. Modificar" << endl;
+                cout << "3. Eliminar" << endl;
+                cout << "4. Listar Todos" << endl;
+                cout << "5. Volver al menú principal" << endl;
+                cout << "Elige una opción: ";
+                cin >> opcion2;
+
+                switch (opcion2)
+                {
+                case 1:
+                    // Código para Agregar
+                    break;
+                case 2:
+                    // Código para Modificar
+                    break;
+                case 3:
+                    // Código para Eliminar
+                    break;
+                case 4:
+                    // Código para la Listar Todos
+                    while (opcion3 != 5)
+                    {
+                        cout << "\nSUBSUBMENÚ - Listar Todos" << endl;
+                        cout << "1. Jugadores" << endl;
+                        cout << "2. Mejores Jugadores" << endl;
+                        cout << "3. Lesionados" << endl;
+                        cout << "4. Los Nuevos" << endl;
+                        cout << "5. Volver al submenú Equipos" << endl;
+                        cout << "Elige una opción: ";
+                        cin >> opcion3;
+
+                        switch (opcion3)
+                        {
+                        case 1:
+                            // Código para Ver Jugadores
+                            while (opcion4 != 5)
+                            {
+                                cout << "\nSUBSUBSUBMENÚ - Jugadores" << endl;
+                                cout << "1. Todos" << endl;
+                                cout << "2. Agregar" << endl;
+                                cout << "3. Modificar" << endl;
+                                cout << "4. Eliminar" << endl;
+                                cout << "5. Volver al subsubmenú Listar Todos" << endl;
+                                cout << "Elige una opción: ";
+                                cin >> opcion4;
+
+                                switch (opcion4)
+                                {
+                                case 1:
+                                    // Código para Ver Todos
+                                    break;
+                                case 2:
+                                    // Código para Agregar
+                                    break;
+                                case 3:
+                                    // Código para Modificar
+                                    break;
+                                case 4:
+                                    // Código para Eliminar
+                                    break;
+                                case 5:
+                                    // Regresar al subsubmenú Listar Todos
+                                    cout << endl;
+                                    break;
+                                default:
+                                    cout << "\nOpción inválida." << endl;
+                                    break;
+                                }
+                            }
+                            break;
+                        case 2:
+                            // Código para Ver Mejores Jugadores
+                            break;
+                        case 3:
+                            // Código para Ver Lesionados
+                            break;
+                        case 4:
+                            // Código para Ver Los Nuevos
+                            break;
+                        case 5:
+                            // Regresar al submenú Equipos
+                            cout << endl;
+                            break;
+                        default:
+                            cout << "\nOpción inválida." << endl;
+                            break;
+                        }
+                        opcion4 = 0;
+                    }
+                    break;
+                case 5:
+                    // Regresar al menú principal
+                    cout << endl;
+                    break;
+                default:
+                    cout << "\nOpción inválida." << endl;
+                    break;
+                }
+                opcion3 = 0; // Reiniciar la opción del subsubmenú
+            }
+            break;
+        case 2: // Jugadores
+            while (opcion2 != 6)
+            {
+                cout << "\nSUBMENU - Jugadores" << endl;
+                cout << "1. Porteros" << endl;
+                cout << "2. Defensas" << endl;
+                cout << "3. Mediocampistas" << endl;
+                cout << "4. Delanteros" << endl;
+                cout << "5. Goleadores" << endl;
+                cout << "6. Volver al menú principal" << endl;
+                cout << "Elige una opción: ";
+                cin >> opcion2;
+
+                switch (opcion2)
+                {
+                case 1:
+                    // Código para Mostrar Porteros
+                    while (opcion3 != 3)
+                    {
+                        cout << "\nSUBSUBMENU - Porteros" << endl;
+                        cout << "1. Todos" << endl;
+                        cout << "2. Los Mejores" << endl;
+                        cout << "3. Volver al submenú Jugadores" << endl;
+                        cout << "Elige una opción: ";
+                        cin >> opcion3;
+
+                        switch (opcion3)
+                        {
+                        case 1:
+                            // Código para Mostrar Todos los Porteros
+                            break;
+                        case 2:
+                            // Código para Mostrar Los Mejores Porteros
+                            break;
+                        case 3:
+                            // Regresar al submenú Jugadores
+                            cout << endl;
+                            break;
+                        default:
+                            cout << "\nOpción inválida." << endl;
+                            break;
+                        }
+                    }
+                    break;
+                case 2:
+                    // Código para Mostrar Defensas
+                    while (opcion3 != 3)
+                    {
+                        cout << "\nSUBSUBMENU - Defensas" << endl;
+                        cout << "1. Todos" << endl;
+                        cout << "2. Los Mejores" << endl;
+                        cout << "3. Volver al submenú Jugadores" << endl;
+                        cout << "Elige una opción: ";
+                        cin >> opcion3;
+
+                        switch (opcion3)
+                        {
+                        case 1:
+                            // Código para Mostrar Todos los Defensas
+                            break;
+                        case 2:
+                            // Código para Mostrar Los Mejores Defensas
+                            break;
+                        case 3:
+                            // Regresar al submenú Jugadores
+                            cout << endl;
+                            break;
+                        default:
+                            cout << "\nOpción inválida." << endl;
+                            break;
+                        }
+                    }
+                    break;
+                case 3:
+                    // Código para Mostrar Mediocampistas
+                    while (opcion3 != 3)
+                    {
+                        cout << "\nSUBSUBMENU - Mediocampistas" << endl;
+                        cout << "1. Todos" << endl;
+                        cout << "2. Los Mejores" << endl;
+                        cout << "3. Volver al submenú Jugadores" << endl;
+                        cout << "Elige una opción: ";
+                        cin >> opcion3;
+
+                        switch (opcion3)
+                        {
+                        case 1:
+                            // Código para Mostrar Todos los Mediocampistas
+                            break;
+                        case 2:
+                            // Código para Mostrar Los Mejores Mediocampistas
+                            break;
+                        case 3:
+                            // Regresar al submenú Jugadores
+                            cout << endl;
+                            break;
+                        default:
+                            cout << "\nOpción inválida." << endl;
+                            break;
+                        }
+                    }
+                    break;
+                case 4:
+                    // Código para la Mostrar Delanteros
+                    while (opcion3 != 3)
+                    {
+                        cout << "\nSUBSUBMENU - Delanteros" << endl;
+                        cout << "1. Todos" << endl;
+                        cout << "2. Los Mejores" << endl;
+                        cout << "3. Volver al submenú Jugadores" << endl;
+                        cout << "Elige una opción: ";
+                        cin >> opcion3;
+
+                        switch (opcion3)
+                        {
+                        case 1:
+                            // Código para Mostrar Todos los Delanteros
+                            break;
+                        case 2:
+                            // Código para Mostrar Los Mejores Delanteros
+                            break;
+                        case 3:
+                            // Regresar al submenú Jugadores
+                            cout << endl;
+                            break;
+                        default:
+                            cout << "\nOpción inválida." << endl;
+                            break;
+                        }
+                    }
+                    break;
+                case 5:
+                    // Código para la Mostrar Goleadores
+                    while (opcion3 != 3)
+                    {
+                        cout << "\nSUBSUBMENU - Goleadores" << endl;
+                        cout << "1. Todos" << endl;
+                        cout << "2. Los Mejores" << endl;
+                        cout << "3. Volver al submenú Jugadores" << endl;
+                        cout << "Elige una opción: ";
+                        cin >> opcion3;
+
+                        switch (opcion3)
+                        {
+                        case 1:
+                            // Código para Mostrar Todos los Goleadores
+                            break;
+                        case 2:
+                            // Código para Mostrar Los Mejores Goleadores
+                            break;
+                        case 3:
+                            // Regresar al submenú Jugadores
+                            cout << endl;
+                            break;
+                        default:
+                            cout << "\nOpción inválida." << endl;
+                            break;
+                        }
+                    }
+                    break;
+                case 6:
+                    // Regresar al menú principal
+                    cout << endl;
+                    break;
+                default:
+                    cout << "\nOpción inválida." << endl;
+                    break;
+                }
+                opcion3 = 0; // Reiniciar la opción del subsubmenú
+            }
+            break;
+        case 3: // Directores Tecnicos
+            while (opcion2 != 6)
+            {
+                cout << "\nSUBMENU - Directores Técnicos" << endl;
+                cout << "1. Todos" << endl;
+                cout << "2. Los más experimentados" << endl;
+                cout << "3. Agregar" << endl;
+                cout << "4. Modificar" << endl;
+                cout << "5. Eliminar" << endl;
+                cout << "6. Volver al menú principal" << endl;
+                cout << "Elige una opción: ";
+                cin >> opcion2;
+
+                switch (opcion2)
+                {
+                case 1:
+                    // Código para Mostrar Todos
+                    break;
+                case 2:
+                    // Código para Mostrar Los mas experimentados
+                    break;
+                case 3:
+                    // Código para Agregar
+                    break;
+                case 4:
+                    // Código para Modificar
+                    break;
+                case 5:
+                    // Código para Eliminar
+                    break;
+                case 6:
+                    // Regresar al menú principal
+                    cout << endl;
+                    break;
+                default:
+                    cout << "\nOpción inválida." << endl;
+                    break;
+                }
+            }
+            break;
+        case 4: // Partidos
+            while (opcion2 != 2)
+            {
+                cout << "\nSUBMENU - Partidos" << endl;
+                cout << "1. Cargar Partidos" << endl;
+                cout << "2. Volver al menú principal" << endl;
+                cout << "Elige una opción: ";
+                cin >> opcion2;
+
+                switch (opcion2)
+                {
+                case 1:
+                    // Código para Cargar Partidos
+                    break;
+                case 2:
+                    // Regresar al menú principal
+                    cout << endl;
+                    break;
+                default:
+                    cout << "\nOpción inválida." << endl;
+                    break;
+                }
+            }
+            break;
+        case 5: // Salir
+            cout << "Saliendo del programa. ¡Hasta luego!" << endl;
+            break;
+        default:
+            cout << "Opción inválida." << endl;
+            break;
+        }
+        opcion2 = 0; // Reiniciar la opción del submenú
+    }
     return 0;
 }
