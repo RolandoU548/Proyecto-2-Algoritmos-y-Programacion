@@ -12,7 +12,7 @@ public:
     string posicion;
     int experiencia;
     int goles;
-    string estado;
+    string estado = "Incorporado";
     Jugador(string, string, string, string, int, int, string);
     Jugador() = default;
     friend ostream &operator<<(ostream &os, const Jugador &obj)
@@ -278,6 +278,7 @@ int main()
     int opcion2 = 0;
     int opcion3 = 0;
     int opcion4 = 0;
+    int opcion5 = 0;
 
     while (opcion1 != 5)
     {
@@ -317,6 +318,10 @@ int main()
                     break;
                 case 4:
                     // Código para la Listar Todos
+                    for (int i = 0; i < equiposLongitud; i++)
+                    {
+                        cout << i + 1 << ") " << equipos[i].nombre << endl;
+                    }
                     while (opcion3 != 5)
                     {
                         cout << "\nSUBSUBMENÚ - Listar Todos" << endl;
