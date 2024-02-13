@@ -22,7 +22,7 @@ public:
     }
 };
 
-Jugador::Jugador(string _equipo, string _nombre, string _apellido, string _posicion, int _experiencia, int _goles, string _estado)
+Jugador::Jugador(string _equipo, string _nombre, string _apellido, string _posicion, int _experiencia, int _goles, string _estado = "Incorporado")
 {
     equipo = _equipo;
     nombre = _nombre;
@@ -209,7 +209,7 @@ int main()
     for (int i = 0; i < jugadoresPrevLongitud; i++)
     {
         identificarJugador(jugadoresPrev[i], equiposPrev, equiposPrevLongitud, equipoJugador, nombreJugador, apellidoJugador, posicionJugador, experienciaJugador);
-        Jugador jugador = Jugador(equipoJugador, nombreJugador, apellidoJugador, posicionJugador, stoi(experienciaJugador), 0, "Incorporado");
+        Jugador jugador = Jugador(equipoJugador, nombreJugador, apellidoJugador, posicionJugador, stoi(experienciaJugador), 0);
         jugadores[i] = jugador;
         jugadoresLongitud++;
         equipoJugador = nombreJugador = apellidoJugador = posicionJugador = experienciaJugador = "";
