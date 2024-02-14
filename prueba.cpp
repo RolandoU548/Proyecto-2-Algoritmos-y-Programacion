@@ -2,6 +2,44 @@
 #include <fstream>
 using namespace std;
 
+void quickSort(int array[], int inicio, int fin)
+{
+    int izq, der, piv, aux;
+    izq = inicio;
+    der = fin;
+    piv = array[(izq + der) / 2];
+
+    do
+    {
+        while (array[izq] < piv && izq < fin)
+        {
+            izq++;
+        }
+        while (array[der] > piv && der > inicio)
+        {
+            der--;
+        }
+        if (izq <= der)
+        {
+            aux = array[izq];
+            array[izq] = array[der];
+            array[der] = aux;
+            izq++;
+            der--;
+        }
+    } while (izq <= der);
+
+    if (inicio <= der)
+    {
+        quickSort(array, inicio, der);
+    }
+
+    if (fin > izq)
+    {
+        quickSort(array, izq, fin);
+    }
+}
+
 // Clase Jugador
 class Jugador
 {
@@ -61,12 +99,67 @@ public:
         for (int i = 0; i < _cantidadJugadores; i++)
         {
             jugadores[i] = _jugadores[i];
+            if (_jugadores[i].posicion == "Portero")
+            {
+                porteros[cantidadPorteros++] = _jugadores[i];
+            }
+            else if (_jugadores[i].posicion == "Delantero")
+            {
+                delanteros[cantidadDelanteros++] = _jugadores[i];
+            }
+            else if (_jugadores[i].posicion == "Defensa")
+            {
+                defensas[cantidadDefensas++] = _jugadores[i];
+            }
         }
     };
+    void ordernarPorExperiencia(int inicio, int fin)
+    {
+        int izq, der, piv, aux;
+        izq = inicio;
+        der = fin;
+        piv = jugadores[(izq + der) / 2].experiencia;
+
+        do
+        {
+            while (jugadores[izq].experiencia > piv && izq < fin)
+            {
+                izq++;
+            }
+            while (jugadores[der].experiencia < piv && der > inicio)
+            {
+                der--;
+            }
+            if (izq <= der)
+            {
+                aux = jugadores[izq].experiencia;
+                jugadores[izq].experiencia = jugadores[der].experiencia;
+                jugadores[der].experiencia = aux;
+                izq++;
+                der--;
+            }
+        } while (izq <= der);
+
+        if (inicio <= der)
+        {
+            ordernarPorExperiencia(inicio, der);
+        }
+
+        if (fin > izq)
+        {
+            ordernarPorExperiencia(izq, fin);
+        }
+    }
     Equipo() = default;
     string nombre;
-    Jugador jugadores[20];
-    int cantidadJugadores;
+    Jugador jugadores[21];
+    Jugador porteros[7];
+    Jugador delanteros[7];
+    Jugador defensas[7];
+    int cantidadJugadores = 0;
+    int cantidadPorteros = 0;
+    int cantidadDelanteros = 0;
+    int cantidadDefensas = 0;
     string mostrarDatos()
     {
         return nombre + " " + to_string(cantidadJugadores);
@@ -222,7 +315,6 @@ int main()
     // Crear lista de objetos de equipos
     Equipo equipos[20];
     int equiposLongitud = equiposPrevLongitud;
-    // for (string equipo : equiposPrev)
     for (int i = 0; i < equiposPrevLongitud; i++)
     {
         string equipo = equiposPrev[i];
@@ -239,6 +331,7 @@ int main()
         }
         Equipo equipoAux(equipo, jugadoresAux, jugadoresPorEquipo);
         equipos[i] = equipoAux;
+        equipos[i].ordernarPorExperiencia(0, equipos[i].cantidadJugadores - 1);
     }
 
     // Crear lista de objetos de Directores Tecnicos
@@ -320,6 +413,7 @@ int main()
                 case 4:
                     // Código para la Listar Todos
                     int seleccionEquipo;
+                    cout << endl;
                     do
                     {
                         for (int i = 0; i < equiposLongitud; i++)
@@ -329,7 +423,7 @@ int main()
                         cin >> seleccionEquipo;
                         seleccionEquipo--;
                     } while (seleccionEquipo < 0 || seleccionEquipo >= equiposLongitud);
-                    cout << equipos[seleccionEquipo].nombre;
+                    cout << equipos[seleccionEquipo].nombre << endl;
 
                     while (opcion3 != 5)
                     {
@@ -361,6 +455,7 @@ int main()
                                 {
                                 case 1:
                                     // Código para Ver Todos
+                                    cout << endl;
                                     equipos[seleccionEquipo].mostrarJugadores();
                                     break;
                                 case 2:
@@ -384,6 +479,7 @@ int main()
                             break;
                         case 2:
                             // Código para Ver Mejores Jugadores
+                            equipos[seleccionEquipo].mostrarJugadores();
                             break;
                         case 3:
                             // Código para Ver Lesionados
