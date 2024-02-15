@@ -187,6 +187,11 @@ public:
 class Equipo
 {
 public:
+    Equipo() = default;
+    Equipo(string nombreEquipo)
+    {
+        nombre = nombreEquipo;
+    }
     Equipo(string _nombre, Jugador _jugadores[], int _cantidadJugadores)
     {
         nombre = _nombre;
@@ -245,6 +250,7 @@ public:
             ordernarPorExperiencia(izq, fin);
         }
     }
+<<<<<<< HEAD
     void agregar(Equipo &equipo)
     {
         cin >> equipo.nombre;
@@ -258,6 +264,9 @@ public:
     }
     Equipo() = default;
     string nombre;
+=======
+    string nombre = "Equipo";
+>>>>>>> 81cc4ddbe71234f23fcf8aee7cd96eafa2865b2f
     Jugador jugadores[21];
     Jugador porteros[7];
     Jugador delanteros[7];
