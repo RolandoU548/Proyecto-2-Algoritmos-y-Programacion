@@ -3,6 +3,44 @@
 #include <string>
 using namespace std;
 
+void quickSort(int array[], int inicio, int fin)
+{
+    int izq, der, piv, aux;
+    izq = inicio;
+    der = fin;
+    piv = array[(izq + der) / 2];
+
+    do
+    {
+        while (array[izq] < piv && izq < fin)
+        {
+            izq++;
+        }
+        while (array[der] > piv && der > inicio)
+        {
+            der--;
+        }
+        if (izq <= der)
+        {
+            aux = array[izq];
+            array[izq] = array[der];
+            array[der] = aux;
+            izq++;
+            der--;
+        }
+    } while (izq <= der);
+
+    if (inicio <= der)
+    {
+        quickSort(array, inicio, der);
+    }
+
+    if (fin > izq)
+    {
+        quickSort(array, izq, fin);
+    }
+}
+
 // Clase Jugador
 class Jugador
 {
@@ -14,35 +52,47 @@ public:
     int experiencia;
     int goles;
     string estado = "Incorporado";
-    Jugador(string, string, string, string, int, int, string);
-    Jugador() = default;
-    friend ostream &operator<<(ostream &os, const Jugador &obj)
+    Jugador(string _equipo, string _nombre, string _apellido, string _posicion, int _experiencia, int _goles, string _estado = "Incorporado")
     {
+<<<<<<< HEAD
         os << "Jugador| Equipo: " << obj.equipo << ", Nombre: " << obj.nombre << ", Apellido: " << obj.apellido << ", Posicion: " << obj.posicion << ", Experiencia: " << obj.experiencia << ", Goles: " << obj.goles << ", Estado: " << obj.estado;
         return os;
+=======
+        equipo = _equipo;
+        nombre = _nombre;
+        apellido = _apellido;
+        posicion = _posicion;
+        experiencia = _experiencia;
+        goles = _goles;
+        estado = _estado;
+    };
+    Jugador() = default;
+    string mostrarDatos()
+    {
+        return equipo + " " + nombre + " " + apellido + " " + posicion + " " + to_string(experiencia);
+>>>>>>> baeb878e94d2452dccc3729f7461de8aeb1d4530
     }
-};
-
-Jugador::Jugador(string _equipo, string _nombre, string _apellido, string _posicion, int _experiencia, int _goles, string _estado)
-{
-    equipo = _equipo;
-    nombre = _nombre;
-    apellido = _apellido;
-    posicion = _posicion;
-    experiencia = _experiencia;
-    goles = _goles;
-    estado = _estado;
 };
 
 // Clase Director Tecnico
 class DirectorTecnico
 {
 public:
-    DirectorTecnico(string, string, int);
+    DirectorTecnico(string _nombre, string _apellido, int _experiencia)
+    {
+        nombre = _nombre;
+        apellido = _apellido;
+        experiencia = _experiencia;
+    };
     DirectorTecnico() = default;
+    string mostrarDatos()
+    {
+        return nombre + " " + apellido + " " + to_string(experiencia);
+    }
     string nombre;
     string apellido;
     int experiencia;
+<<<<<<< HEAD
     friend ostream &operator<<(ostream &os, const DirectorTecnico &obj)
     {
         os << "Director Tecnico| Nombre: " << obj.nombre << ", Apellido: " << obj.apellido << ", Experiencia: " << obj.experiencia;
@@ -55,37 +105,104 @@ DirectorTecnico::DirectorTecnico(string _nombre, string _apellido, int _experien
     nombre = _nombre;
     apellido = _apellido;
     experiencia = _experiencia;
+=======
+>>>>>>> baeb878e94d2452dccc3729f7461de8aeb1d4530
 };
 
 // Clase Equipo
 class Equipo
 {
 public:
-    Equipo(string, Jugador[], int);
+    Equipo(string _nombre, Jugador _jugadores[], int _cantidadJugadores)
+    {
+        nombre = _nombre;
+        cantidadJugadores = _cantidadJugadores;
+        for (int i = 0; i < _cantidadJugadores; i++)
+        {
+            jugadores[i] = _jugadores[i];
+            if (_jugadores[i].posicion == "Portero")
+            {
+                porteros[cantidadPorteros++] = _jugadores[i];
+            }
+            else if (_jugadores[i].posicion == "Delantero")
+            {
+                delanteros[cantidadDelanteros++] = _jugadores[i];
+            }
+            else if (_jugadores[i].posicion == "Defensa")
+            {
+                defensas[cantidadDefensas++] = _jugadores[i];
+            }
+        }
+    };
+    void ordernarPorExperiencia(int inicio, int fin)
+    {
+        int izq, der, piv, aux;
+        izq = inicio;
+        der = fin;
+        piv = jugadores[(izq + der) / 2].experiencia;
+
+        do
+        {
+            while (jugadores[izq].experiencia > piv && izq < fin)
+            {
+                izq++;
+            }
+            while (jugadores[der].experiencia < piv && der > inicio)
+            {
+                der--;
+            }
+            if (izq <= der)
+            {
+                aux = jugadores[izq].experiencia;
+                jugadores[izq].experiencia = jugadores[der].experiencia;
+                jugadores[der].experiencia = aux;
+                izq++;
+                der--;
+            }
+        } while (izq <= der);
+
+        if (inicio <= der)
+        {
+            ordernarPorExperiencia(inicio, der);
+        }
+
+        if (fin > izq)
+        {
+            ordernarPorExperiencia(izq, fin);
+        }
+    }
     Equipo() = default;
     string nombre;
-    Jugador jugadores[20];
-    int cantidadJugadores;
-    friend ostream &operator<<(ostream &os, const Equipo &obj)
+    Jugador jugadores[21];
+    Jugador porteros[7];
+    Jugador delanteros[7];
+    Jugador defensas[7];
+    int cantidadJugadores = 0;
+    int cantidadPorteros = 0;
+    int cantidadDelanteros = 0;
+    int cantidadDefensas = 0;
+    string mostrarDatos()
     {
-        os << "Equipo| Nombre: " << obj.nombre << ", Cantidad de Jugadores: " << obj.cantidadJugadores << ", Jugadores: ";
-        for (int i = 0; i < obj.cantidadJugadores; i++)
+        return nombre + " " + to_string(cantidadJugadores);
+    }
+    void mostrarJugadores()
+    {
+        for (int i = 0; i < cantidadJugadores; i++)
         {
-            os << obj.jugadores[i].nombre << " " << obj.jugadores[i].apellido << ((i == obj.cantidadJugadores - 1) ? ". " : ", ");
+            cout << jugadores[i].mostrarDatos() << endl;
         }
-        return os;
-    }
-};
-
-Equipo::Equipo(string _nombre, Jugador _jugadores[], int _cantidadJugadores)
-{
-    nombre = _nombre;
-    cantidadJugadores = _cantidadJugadores;
-    for (int i = 0; i < _cantidadJugadores; i++)
+    };
+    void mostrarLesionados()
     {
-        jugadores[i] = _jugadores[i];
-    }
-}
+        for (int i = 0; i < cantidadJugadores; i++)
+        {
+            if (jugadores[i].estado == "Lesionado")
+            {
+                cout << jugadores[i].mostrarDatos() << endl;
+            }
+        }
+    };
+};
 
 // Procesar archivo entrada.in
 void procesarEntrada(string entrada, string equiposPrev[], int &equiposPrevLongitud, string jugadoresPrev[], int &jugadoresPrevLongitud, string directoresPrev[], int &directoresPrevLongitud)
@@ -292,7 +409,7 @@ int main()
     for (int i = 0; i < jugadoresPrevLongitud; i++)
     {
         identificarJugador(jugadoresPrev[i], equiposPrev, equiposPrevLongitud, equipoJugador, nombreJugador, apellidoJugador, posicionJugador, experienciaJugador);
-        Jugador jugador = Jugador(equipoJugador, nombreJugador, apellidoJugador, posicionJugador, stoi(experienciaJugador), 0, "Incorporado");
+        Jugador jugador = Jugador(equipoJugador, nombreJugador, apellidoJugador, posicionJugador, stoi(experienciaJugador), 0);
         jugadores[i] = jugador;
         jugadoresLongitud++;
         equipoJugador = nombreJugador = apellidoJugador = posicionJugador = experienciaJugador = "";
@@ -301,7 +418,6 @@ int main()
     // Crear lista de objetos de equipos
     Equipo equipos[20];
     int equiposLongitud = equiposPrevLongitud;
-    // for (string equipo : equiposPrev)
     for (int i = 0; i < equiposPrevLongitud; i++)
     {
         string equipo = equiposPrev[i];
@@ -318,6 +434,7 @@ int main()
         }
         Equipo equipoAux(equipo, jugadoresAux, jugadoresPorEquipo);
         equipos[i] = equipoAux;
+        equipos[i].ordernarPorExperiencia(0, equipos[i].cantidadJugadores - 1);
     }
 
     // Crear lista de objetos de Directores Tecnicos
@@ -334,26 +451,28 @@ int main()
 
     // Imprimir Equipos
     cout << "EQUIPOS" << endl;
-
     for (int i = 0; i < equiposLongitud; i++)
     {
-        cout << equipos[i] << endl;
+        cout << equipos[i].mostrarDatos() << endl;
     }
 
     // Imprimir Jugadores
     cout << "\nJUGADORES" << endl;
-
     for (int i = 0; i < jugadoresLongitud; i++)
     {
-        cout << jugadores[i] << endl;
+        cout << jugadores[i].mostrarDatos() << endl;
     }
 
     // Imprimir Directores Tecnicos
+<<<<<<< HEAD
     cout << "\nDIRECTORES TECNICOS" << endl;
 
+=======
+    cout << "\nDIRECTORES TÉCNICOS" << endl;
+>>>>>>> baeb878e94d2452dccc3729f7461de8aeb1d4530
     for (int i = 0; i < directoresLongitud; i++)
     {
-        cout << directores[i] << endl;
+        cout << directores[i].mostrarDatos() << endl;
     }
 
     // MENU PRINCIPAL
@@ -401,10 +520,19 @@ int main()
                     break;
                 case 4:
                     // Código para la Listar Todos
-                    for (int i = 0; i < equiposLongitud; i++)
+                    int seleccionEquipo;
+                    cout << endl;
+                    do
                     {
-                        cout << i + 1 << ") " << equipos[i].nombre << endl;
-                    }
+                        for (int i = 0; i < equiposLongitud; i++)
+                        {
+                            cout << i + 1 << ") " << equipos[i].nombre << endl;
+                        }
+                        cin >> seleccionEquipo;
+                        seleccionEquipo--;
+                    } while (seleccionEquipo < 0 || seleccionEquipo >= equiposLongitud);
+                    cout << equipos[seleccionEquipo].nombre << endl;
+
                     while (opcion3 != 5)
                     {
                         cout << "\nSUBSUBMENÚ - Listar Todos" << endl;
@@ -435,6 +563,8 @@ int main()
                                 {
                                 case 1:
                                     // Código para Ver Todos
+                                    cout << endl;
+                                    equipos[seleccionEquipo].mostrarJugadores();
                                     break;
                                 case 2:
                                     // Código para Agregar
@@ -457,6 +587,7 @@ int main()
                             break;
                         case 2:
                             // Código para Ver Mejores Jugadores
+                            equipos[seleccionEquipo].mostrarJugadores();
                             break;
                         case 3:
                             // Código para Ver Lesionados
