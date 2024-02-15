@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+#include <string>
 using namespace std;
 
 // Clase Jugador
@@ -17,7 +18,7 @@ public:
     Jugador() = default;
     friend ostream &operator<<(ostream &os, const Jugador &obj)
     {
-        os << "Jugador| Equipo: " << obj.equipo << ", Nombre: " << obj.nombre << ", Apellido: " << obj.apellido << ", Posición: " << obj.posicion << ", Experiencia: " << obj.experiencia << ", Goles: " << obj.goles << ", Estado: " << obj.estado;
+        os << "Jugador| Equipo: " << obj.equipo << ", Nombre: " << obj.nombre << ", Apellido: " << obj.apellido << ", Posicion: " << obj.posicion << ", Experiencia: " << obj.experiencia << ", Goles: " << obj.goles << ", Estado: " << obj.estado;
         return os;
     }
 };
@@ -44,7 +45,7 @@ public:
     int experiencia;
     friend ostream &operator<<(ostream &os, const DirectorTecnico &obj)
     {
-        os << "Director Técnico| Nombre: " << obj.nombre << ", Apellido: " << obj.apellido << ", Experiencia: " << obj.experiencia;
+        os << "Director Tecnico| Nombre: " << obj.nombre << ", Apellido: " << obj.apellido << ", Experiencia: " << obj.experiencia;
         return os;
     }
 };
@@ -192,6 +193,88 @@ void identificarDirectorTecnico(string directorTecnico, string &nombreDirectorTe
     }
 }
 
+// Actualizar datos de salida entrada.in
+void guardarDatosEnArchivo(string archivo, Equipo equipos[], int equiposLongitud, Jugador jugadores[], int jugadoresLongitud, DirectorTecnico directores[], int directoresLongitud)
+{
+    ofstream archivoSalida;
+    archivoSalida.open(archivo);
+
+    archivoSalida << "E" << endl;
+    for (int i = 0; i < equiposLongitud; i++)
+    {
+        archivoSalida << equipos[i].nombre << endl;
+    }
+
+    archivoSalida << "J" << endl;
+    for (int i = 0; i < jugadoresLongitud; i++)
+    {
+        archivoSalida << jugadores[i].equipo << " " << jugadores[i].nombre << " " << jugadores[i].apellido << " " << jugadores[i].posicion << " " << jugadores[i].experiencia << endl;
+    }
+    
+    archivoSalida << "D" << endl;
+    for (int i = 0; i < directoresLongitud; i++)
+    {
+        archivoSalida << directores[i].nombre << " " << directores[i].apellido << " " << directores[i].experiencia << endl;
+    }
+}
+
+// Mostrar lista de Equipos
+void listarEquipos(Equipo equipos[], int equiposLongitud)
+{
+    for (int i = 0; i < equiposLongitud; i++)
+    {
+        cout << equipos[i].nombre << endl;
+    }
+}
+
+// Mostrar lista de Jugadores
+void listarJugadores(string posicion, Jugador jugadores[], int jugadoresLongitud, bool mejores)
+{
+    if (mejores)
+    {
+        if (posicion == "")
+        {
+            //funcion ordenar segun goles
+        }
+        else
+        {
+            //funcion ordenar segun experiencia
+        }
+    }
+    for (int i = 0; i < jugadoresLongitud; i++)
+    {
+        //Goleadores
+        if (posicion == "")
+        {
+            if (jugadores[i].goles > 0)
+            {
+                cout << jugadores[i].equipo << " " << jugadores[i].nombre << " " << jugadores[i].apellido << " " << jugadores[i].posicion << " " << jugadores[i].experiencia << " " << jugadores[i].goles;
+                if (jugadores[i].goles == 1)
+                    cout << " Gol";
+                else
+                    cout << " Goles";
+            }
+        }
+        //Posicion
+        if (posicion == jugadores[i].posicion)
+            cout << jugadores[i].equipo << " " << jugadores[i].nombre << " " << jugadores[i].apellido << " " << jugadores[i].posicion << " " << jugadores[i].experiencia << endl;
+    }
+    
+}
+
+// Mostrar lista de Directores
+void listarDirectores(DirectorTecnico directores[], int directoresLongitud, bool experimentados)
+{
+    if (experimentados)
+    {
+        //funcion ordenar
+    }
+    for (int i = 0; i < directoresLongitud; i++)
+    {
+        cout << directores[i].nombre << " " << directores[i].apellido << " " << directores[i].experiencia << endl;
+    }
+}
+
 int main()
 {
     string equiposPrev[20];
@@ -266,7 +349,7 @@ int main()
     }
 
     // Imprimir Directores Tecnicos
-    cout << "\nDIRECTORES TÉCNICOS" << endl;
+    cout << "\nDIRECTORES TECNICOS" << endl;
 
     for (int i = 0; i < directoresLongitud; i++)
     {
@@ -282,13 +365,13 @@ int main()
 
     while (opcion1 != 5)
     {
-        cout << "MENÚ PRINCIPAL" << endl;
+        cout << "MENU PRINCIPAL" << endl;
         cout << "1. Equipos" << endl;
         cout << "2. Jugadores" << endl;
-        cout << "3. Directores Técnicos" << endl;
+        cout << "3. Directores Tecnicos" << endl;
         cout << "4. Partidos" << endl;
         cout << "5. Salir" << endl;
-        cout << "Elige una opción: ";
+        cout << "Elige una opcion: ";
         cin >> opcion1;
 
         switch (opcion1)
@@ -577,7 +660,7 @@ int main()
         case 3: // Directores Tecnicos
             while (opcion2 != 6)
             {
-                cout << "\nSUBMENU - Directores Técnicos" << endl;
+                cout << "\nSUBMENU - Directores Tecnicos" << endl;
                 cout << "1. Todos" << endl;
                 cout << "2. Los más experimentados" << endl;
                 cout << "3. Agregar" << endl;
@@ -597,7 +680,7 @@ int main()
                     break;
                 case 3:
                     // Código para Agregar
-                    break;
+                    break; 
                 case 4:
                     // Código para Modificar
                     break;
@@ -647,5 +730,11 @@ int main()
         }
         opcion2 = 0; // Reiniciar la opción del submenú
     }
+    //jugadores[jugadoresLongitud] = { "Canaimita Patriota", "Javier", "Hernandez", "Defensa", 5, 2, "Incorporado" };
+    //jugadoresLongitud++;
+    //listarJugadores("", jugadores, jugadoresLongitud, true);
+    //guardarDatosEnArchivo("entrada1.txt", equipos, equiposLongitud, jugadores, jugadoresLongitud, directores, directoresLongitud);
+    //listarEquipos(equipos, equiposLongitud);
+    //listarDirectores(directores, directoresLongitud, true);
     return 0;
 }
