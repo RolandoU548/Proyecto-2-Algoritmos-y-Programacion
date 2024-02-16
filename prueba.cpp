@@ -813,59 +813,87 @@ int main()
                                     // Código para Modificar
                                     {
                                         int seleccionJugador;
+                                        int numRef;
+                                        Jugador jugadorRef;
+                                        string nuevoDato;
+                                        int nuevaExp;
                                         cout << endl;
                                         do
                                         {
-                                            equipos->mostrarJugadores(true);
+                                            equipos[seleccionEquipo].mostrarJugadores(true);
                                             cin >> seleccionJugador;
                                             seleccionJugador--;
                                         } while (seleccionJugador < 0 || seleccionJugador >= equipos[seleccionEquipo].cantidadJugadores);
+                                        jugadorRef = equipos[seleccionEquipo].jugadores[seleccionJugador];
+                                        for (int i = 0; i < jugadoresLongitud; i++)
+                                        {
+                                            if (jugadorRef.equipo == jugadores[i].equipo && jugadorRef.nombre == jugadores[i].nombre && jugadorRef.apellido == jugadores[i].apellido && jugadorRef.posicion == jugadores[i].posicion && jugadorRef.experiencia == jugadores[i].experiencia)
+                                            {
+                                                numRef = i;
+                                                break;
+                                            }
+                                        }
                                         int opcion = 0;
                                         while (opcion < 1 || opcion > 5)
                                         {
-                                            cout << "1) Nombre: " << equipos[seleccionEquipo].jugadores[seleccionJugador].nombre << endl;
-                                            cout << "2) Apellido: " << equipos[seleccionEquipo].jugadores[seleccionJugador].apellido << endl;
-                                            cout << "3) Posicion: " << equipos[seleccionEquipo].jugadores[seleccionJugador].posicion << endl;
-                                            cout << "4) Experiencia: " << equipos[seleccionEquipo].jugadores[seleccionJugador].experiencia << endl;
+                                            cout << "1) Nombre: " << jugadorRef.nombre << endl;
+                                            cout << "2) Apellido: " << jugadorRef.apellido << endl;
+                                            cout << "3) Posicion: " << jugadorRef.posicion << endl;
+                                            cout << "4) Experiencia: " << jugadorRef.experiencia << endl;
                                             cout << "5) Volver" << endl;
                                             cin >> opcion;
                                             switch (opcion)
                                             {
                                             case 1:
-                                                cin >> equipos[seleccionEquipo].jugadores[seleccionJugador].nombre;
-                                                cout << equipos[seleccionEquipo].jugadores[seleccionJugador].mostrarDatos() << endl;
+                                                cin >> nuevoDato;
+                                                equipos[seleccionEquipo].jugadores[seleccionJugador].nombre = jugadores[numRef].nombre = nuevoDato;
                                                 break;
                                             case 2:
-                                                cin >> equipos[seleccionEquipo].jugadores[seleccionJugador].apellido;
-                                                cout << equipos[seleccionEquipo].jugadores[seleccionJugador].mostrarDatos() << endl;
+                                                cin >> nuevoDato;
+                                                equipos[seleccionEquipo].jugadores[seleccionJugador].apellido = jugadores[numRef].apellido = nuevoDato;
                                                 break;
                                             case 3:
-                                                cin >> equipos[seleccionEquipo].jugadores[seleccionJugador].posicion;
-                                                cout << equipos[seleccionEquipo].jugadores[seleccionJugador].mostrarDatos() << endl;
+                                                cin >> nuevoDato;
+                                                equipos[seleccionEquipo].jugadores[seleccionJugador].posicion = jugadores[numRef].posicion = nuevoDato;
                                                 break;
                                             case 4:
-                                                cin >> equipos[seleccionEquipo].jugadores[seleccionJugador].experiencia;
-                                                cout << equipos[seleccionEquipo].jugadores[seleccionJugador].mostrarDatos() << endl;
+                                                cin >> nuevaExp;
+                                                equipos[seleccionEquipo].jugadores[seleccionJugador].experiencia = jugadores[numRef].experiencia = nuevaExp;
                                                 break;
                                             default:
                                                 cout << endl;
                                                 break;
                                             }
                                         }
+                                        cout << jugadorRef.mostrarDatos() << endl;
+                                        jugadores->actualizarPosiciones(jugadores, jugadoresLongitud, porteros, cantidadPorteros, defensas, cantidadDefensas, mediocampistas, cantidadDeMediocampistas, delanteros, cantidadDelanteros);
                                         break;
                                     }
                                 case 4:
                                     // Código para Eliminar
                                     {
                                         int seleccionJugador;
+                                        Jugador jugadorRef;
+                                        int numRef;
                                         cout << endl;
                                         do
                                         {
-                                            equipos->mostrarJugadores(true);
+                                            equipos[seleccionEquipo].mostrarJugadores(true);
                                             cin >> seleccionJugador;
                                             seleccionJugador--;
                                         } while (seleccionJugador < 0 || seleccionJugador >= equipos[seleccionEquipo].cantidadJugadores);
-                                        equipos->eliminarJugador(seleccionJugador);
+                                        jugadorRef = equipos[seleccionEquipo].jugadores[seleccionJugador];
+                                        for (int i = 0; i < jugadoresLongitud; i++)
+                                        {
+                                            if (jugadorRef.equipo == jugadores[i].equipo && jugadorRef.nombre == jugadores[i].nombre && jugadorRef.apellido == jugadores[i].apellido && jugadorRef.posicion == jugadores[i].posicion && jugadorRef.experiencia == jugadores[i].experiencia)
+                                            {
+                                                numRef = i;
+                                                break;
+                                            }
+                                        }
+                                        equipos[seleccionEquipo].eliminarJugador(seleccionJugador);
+                                        jugadores->eliminar(jugadores, jugadoresLongitud, numRef);
+                                        jugadores->actualizarPosiciones(jugadores, jugadoresLongitud, porteros, cantidadPorteros, defensas, cantidadDefensas, mediocampistas, cantidadDeMediocampistas, delanteros, cantidadDelanteros);
                                         break;
                                     }
                                 case 5:
@@ -1111,9 +1139,9 @@ int main()
                 case 5:
                 {
                     // Código para Eliminar
+                    directores->listar(directores, directoresLongitud, true);
                     int opcionDirector = 0;
                     cin >> opcionDirector;
-                    directores->listar(directores, directoresLongitud, true);
                     directoresLongitud--;
                     directores->eliminar(directores, directoresLongitud, opcionDirector - 1);
                     break;
