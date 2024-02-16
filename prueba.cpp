@@ -67,6 +67,13 @@ public:
     {
         return equipo + " " + nombre + " " + apellido + " " + posicion + " " + to_string(experiencia);
     }
+    void agregar(Jugador &jugador, string nombreEquipo, string nombre, string apellido, string posicion, int experiencia){
+        jugador.equipo = nombreEquipo;
+        jugador.nombre = nombre;
+        jugador.apellido = apellido;
+        jugador.posicion = posicion;
+        jugador.experiencia = experiencia;
+    }
     void listar(string posicion, Jugador jugadores[], int jugadoresLongitud, bool mejores)
     {
         if (mejores)
@@ -158,10 +165,8 @@ public:
                 cout << director.mostrarDatos() << endl;
                 opcion = 4;
                 break;
-            case 4:
-                cout << endl;
-                break;
             default:
+                cout << endl;
                 break;
             }
         }
@@ -232,18 +237,6 @@ public:
         for (int i = 0; i < _cantidadJugadores; i++)
         {
             jugadores[i] = _jugadores[i];
-            if (_jugadores[i].posicion == "Portero")
-            {
-                porteros[cantidadPorteros++] = _jugadores[i];
-            }
-            else if (_jugadores[i].posicion == "Delantero")
-            {
-                delanteros[cantidadDelanteros++] = _jugadores[i];
-            }
-            else if (_jugadores[i].posicion == "Defensa")
-            {
-                defensas[cantidadDefensas++] = _jugadores[i];
-            }
         }
     };
     void ordernarPorExperiencia(int inicio, int fin)
@@ -283,15 +276,18 @@ public:
             ordernarPorExperiencia(izq, fin);
         }
     }
+    void agregarJugador(string nombre, string apellido, string posicion, int experiencia)
+    {
+        jugadores[cantidadJugadores].nombre = nombre;
+        jugadores[cantidadJugadores].apellido = apellido;
+        jugadores[cantidadJugadores].posicion = posicion;
+        jugadores[cantidadJugadores].experiencia = experiencia;
+        jugadores[cantidadJugadores].equipo = this->nombre;
+        cantidadJugadores++;
+    };
     string nombre = "Equipo";
     Jugador jugadores[21];
-    Jugador porteros[7];
-    Jugador delanteros[7];
-    Jugador defensas[7];
     int cantidadJugadores = 0;
-    int cantidadPorteros = 0;
-    int cantidadDelanteros = 0;
-    int cantidadDefensas = 0;
     string mostrarDatos()
     {
         return nombre + " " + to_string(cantidadJugadores);
@@ -495,7 +491,6 @@ int main()
         }
         Equipo equipoAux(equipo, jugadoresAux, jugadoresPorEquipo);
         equipos[i] = equipoAux;
-        equipos[i].ordernarPorExperiencia(0, equipos[i].cantidadJugadores - 1);
     }
 
     // Crear lista de objetos de Directores Tecnicos
@@ -509,7 +504,6 @@ int main()
         directoresLongitud++;
         nombreDirectorTecnico = apellidoDirectorTecnico = experienciaDirectorTecnico = "";
     }
-    directores->ordenarPorExperiencia(directores, 0, directoresLongitud);
 
     // Imprimir Equipos
     cout << "EQUIPOS" << endl;
@@ -628,6 +622,17 @@ int main()
                                     break;
                                 case 2:
                                     // Código para Agregar
+                                    {
+                                        string nombreJugador, apellidoJugador, posicionJugador;
+                                        int experienciaJugador;
+                                        cin >> nombreJugador;
+                                        cin >> apellidoJugador;
+                                        cin >> posicionJugador;
+                                        cin >> experienciaJugador;
+                                        equipos[seleccionEquipo].agregarJugador(nombreJugador, apellidoJugador, posicionJugador, experienciaJugador);
+                                        jugadores->agregar(jugadores[jugadoresLongitud], equipos[seleccionEquipo].nombre, nombreJugador, apellidoJugador, posicionJugador, experienciaJugador);
+                                        jugadoresLongitud++;
+                                    }
                                     break;
                                 case 3:
                                     // Código para Modificar
@@ -647,6 +652,7 @@ int main()
                             break;
                         case 2:
                             // Código para Ver Mejores Jugadores
+                            equipos[seleccionEquipo].ordernarPorExperiencia(0, equipos[seleccionEquipo].cantidadJugadores - 1);
                             equipos[seleccionEquipo].mostrarJugadores();
                             break;
                         case 3:
@@ -849,10 +855,11 @@ int main()
                 {
                 case 1:
                     // Código para Mostrar Todos
-                    directores->listar(directores, directoresLongitud,  false);
+                    directores->listar(directores, directoresLongitud, false);
                     break;
                 case 2:
                     // Código para Mostrar Los mas experimentados
+                    directores->ordenarPorExperiencia(directores, 0, directoresLongitud);
                     directores->listar(directores, directoresLongitud, false);
                     break;
                 case 3:
