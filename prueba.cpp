@@ -73,16 +73,16 @@ public:
         {
             if (posicion == "")
             {
-                //funcion ordenar segun goles
+                // funcion ordenar segun goles
             }
             else
             {
-                //funcion ordenar segun experiencia
+                // funcion ordenar segun experiencia
             }
         }
         for (int i = 0; i < jugadoresLongitud; i++)
         {
-            //Goleadores
+            // Goleadores
             if (posicion == "" && mejores)
             {
                 if (jugadores[i].goles > 0)
@@ -94,7 +94,7 @@ public:
                         cout << " Goles" << endl;
                 }
             }
-            //Posicion
+            // Posicion
             else if (posicion == jugadores[i].posicion)
                 cout << jugadores[i].mostrarDatos() << endl;
         }
@@ -106,7 +106,7 @@ class DirectorTecnico
 {
 public:
     DirectorTecnico(string _nombre, string _apellido, int _experiencia)
-    { 
+    {
         nombre = _nombre;
         apellido = _apellido;
         experiencia = _experiencia;
@@ -116,12 +116,8 @@ public:
     {
         return nombre + " " + apellido + " " + to_string(experiencia);
     }
-    void listar(DirectorTecnico directores[], int directoresLongitud, bool experimentados, bool enumerado)
+    void listar(DirectorTecnico directores[], int directoresLongitud, bool enumerado)
     {
-        if (experimentados)
-        {
-            //funcion ordenar
-        }
         for (int i = 0; i < directoresLongitud; i++)
         {
             if (enumerado)
@@ -129,7 +125,7 @@ public:
             cout << directores[i].mostrarDatos() << endl;
         }
     }
-    void agregar(DirectorTecnico& director)
+    void agregar(DirectorTecnico &director)
     {
         cin >> director.nombre;
         cin >> director.apellido;
@@ -175,6 +171,43 @@ public:
         for (int i = directorPosicion; i < directoresLongitud; i++)
         {
             directores[i] = directores[i + 1];
+        }
+    }
+    void ordenarPorExperiencia(DirectorTecnico directores[], int inicio, int fin)
+    {
+        int izq, der, piv, aux;
+        izq = inicio;
+        der = fin;
+        piv = directores[(izq + der) / 2].experiencia;
+
+        do
+        {
+            while (directores[izq].experiencia > piv && izq < fin)
+            {
+                izq++;
+            }
+            while (directores[der].experiencia < piv && der > inicio)
+            {
+                der--;
+            }
+            if (izq <= der)
+            {
+                aux = directores[izq].experiencia;
+                directores[izq].experiencia = directores[der].experiencia;
+                directores[der].experiencia = aux;
+                izq++;
+                der--;
+            }
+        } while (izq <= der);
+
+        if (inicio <= der)
+        {
+            ordenarPorExperiencia(directores, inicio, der);
+        }
+
+        if (fin > izq)
+        {
+            ordenarPorExperiencia(directores, izq, fin);
         }
     }
 
@@ -250,23 +283,7 @@ public:
             ordernarPorExperiencia(izq, fin);
         }
     }
-<<<<<<< HEAD
-    void agregar(Equipo &equipo)
-    {
-        cin >> equipo.nombre;
-    }
-    void eliminar(Equipo equipos[], int equiposLongitud, int equipoPosicion)
-    {
-        for (int i = equipoPosicion; i < equiposLongitud; i++)
-        {
-            equipos[i] = equipos[i + 1];
-        }
-    }
-    Equipo() = default;
-    string nombre;
-=======
     string nombre = "Equipo";
->>>>>>> 81cc4ddbe71234f23fcf8aee7cd96eafa2865b2f
     Jugador jugadores[21];
     Jugador porteros[7];
     Jugador delanteros[7];
@@ -428,7 +445,7 @@ void guardarDatosEnArchivo(string archivo, Equipo equipos[], int equiposLongitud
     {
         archivoSalida << jugadores[i].equipo << " " << jugadores[i].nombre << " " << jugadores[i].apellido << " " << jugadores[i].posicion << " " << jugadores[i].experiencia << endl;
     }
-    
+
     archivoSalida << "D" << endl;
     for (int i = 0; i < directoresLongitud; i++)
     {
@@ -492,6 +509,7 @@ int main()
         directoresLongitud++;
         nombreDirectorTecnico = apellidoDirectorTecnico = experienciaDirectorTecnico = "";
     }
+    directores->ordenarPorExperiencia(directores, 0, directoresLongitud);
 
     // Imprimir Equipos
     cout << "EQUIPOS" << endl;
@@ -506,7 +524,7 @@ int main()
 
     // Imprimir Directores Tecnicos
     cout << "\nDIRECTORES TÉCNICOS" << endl;
-    directores->listar(directores, directoresLongitud, false, false);
+    directores->listar(directores, directoresLongitud, false);
 
     // MENU PRINCIPAL
     int opcion1 = 0;
@@ -545,7 +563,7 @@ int main()
                 case 1:
                     // Código para Agregar
                     equiposLongitud++;
-                    equipos->agregar(equipos[equiposLongitud-1]);
+                    // equipos->agregar(equipos[equiposLongitud - 1]);
                     break;
                 case 2:
                     // Código para Modificar
@@ -557,7 +575,7 @@ int main()
                     int opcionEquipo = 0;
                     cin >> opcionEquipo;
                     equiposLongitud--;
-                    equipos->eliminar(equipos, equiposLongitud, opcionEquipo - 1);
+                    // equipos->eliminar(equipos, equiposLongitud, opcionEquipo - 1);
                     break;
                 }
                 case 4:
@@ -831,11 +849,11 @@ int main()
                 {
                 case 1:
                     // Código para Mostrar Todos
-                    directores->listar(directores, directoresLongitud, false, false);
+                    directores->listar(directores, directoresLongitud,  false);
                     break;
                 case 2:
                     // Código para Mostrar Los mas experimentados
-                    directores->listar(directores, directoresLongitud, true, false);
+                    directores->listar(directores, directoresLongitud, false);
                     break;
                 case 3:
                     // Código para Agregar
@@ -845,7 +863,7 @@ int main()
                 case 4:
                 {
                     // Código para Modificar
-                    directores->listar(directores, directoresLongitud, false, true);
+                    directores->listar(directores, directoresLongitud, true);
                     int opcionDirector = 0;
                     cin >> opcionDirector;
                     directores->modificar(directores[opcionDirector - 1]);
@@ -854,11 +872,11 @@ int main()
                 case 5:
                 {
                     // Código para Eliminar
-                    directores->listar(directores, directoresLongitud, false, true);
+                    directores->listar(directores, directoresLongitud, true);
                     int opcionDirector = 0;
                     cin >> opcionDirector;
                     directoresLongitud--;
-                    directores->eliminar(directores, directoresLongitud, opcionDirector-1);
+                    directores->eliminar(directores, directoresLongitud, opcionDirector - 1);
                     break;
                 }
                 case 6:
@@ -904,8 +922,8 @@ int main()
         }
         opcion2 = 0; // Reiniciar la opción del submenú
     }
-    //jugadores[jugadoresLongitud] = { "Canaimita Patriota", "Javier", "Hernandez", "Defensa", 5, 2, "Incorporado" }; jugadoresLongitud++;
-    //listarJugadores("", jugadores, jugadoresLongitud, true);
-    //guardarDatosEnArchivo("entrada1.txt", equipos, equiposLongitud, jugadores, jugadoresLongitud, directores, directoresLongitud);
+    // jugadores[jugadoresLongitud] = { "Canaimita Patriota", "Javier", "Hernandez", "Defensa", 5, 2, "Incorporado" }; jugadoresLongitud++;
+    // listarJugadores("", jugadores, jugadoresLongitud, true);
+    // guardarDatosEnArchivo("entrada.in", equipos, equiposLongitud, jugadores, jugadoresLongitud, directores, directoresLongitud);
     return 0;
 }
