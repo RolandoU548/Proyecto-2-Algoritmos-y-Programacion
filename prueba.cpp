@@ -67,7 +67,8 @@ public:
     {
         return equipo + " " + nombre + " " + apellido + " " + posicion + " " + to_string(experiencia);
     }
-    void agregar(Jugador &jugador, string nombreEquipo, string nombre, string apellido, string posicion, int experiencia){
+    void agregar(Jugador &jugador, string nombreEquipo, string nombre, string apellido, string posicion, int experiencia)
+    {
         jugador.equipo = nombreEquipo;
         jugador.nombre = nombre;
         jugador.apellido = apellido;
@@ -141,7 +142,7 @@ public:
     void modificar(DirectorTecnico &director)
     {
         int opcion = 0;
-        while (opcion != 4)
+        while (opcion < 1 || opcion > 4)
         {
             cout << "1) Nombre: " << director.nombre << endl;
             cout << "2) Apellido: " << director.apellido << endl;
@@ -153,17 +154,14 @@ public:
             case 1:
                 cin >> director.nombre;
                 cout << director.mostrarDatos() << endl;
-                opcion = 4;
                 break;
             case 2:
                 cin >> director.apellido;
                 cout << director.mostrarDatos() << endl;
-                opcion = 4;
                 break;
             case 3:
                 cin >> director.experiencia;
                 cout << director.mostrarDatos() << endl;
-                opcion = 4;
                 break;
             default:
                 cout << endl;
@@ -285,6 +283,14 @@ public:
         jugadores[cantidadJugadores].equipo = this->nombre;
         cantidadJugadores++;
     };
+    void eliminarJugador(int jugadorPosicion)
+    {
+        for (int i = jugadorPosicion; i < cantidadJugadores; i++)
+        {
+            jugadores[i] = jugadores[i + 1];
+        }
+        cantidadJugadores--;
+    }
     string nombre = "Equipo";
     Jugador jugadores[21];
     int cantidadJugadores = 0;
@@ -292,10 +298,12 @@ public:
     {
         return nombre + " " + to_string(cantidadJugadores);
     }
-    void mostrarJugadores()
+    void mostrarJugadores(bool enumerado)
     {
         for (int i = 0; i < cantidadJugadores; i++)
         {
+            if (enumerado)
+                cout << i + 1 << ") ";
             cout << jugadores[i].mostrarDatos() << endl;
         }
     };
@@ -618,7 +626,7 @@ int main()
                                 case 1:
                                     // Código para Ver Todos
                                     cout << endl;
-                                    equipos[seleccionEquipo].mostrarJugadores();
+                                    equipos[seleccionEquipo].mostrarJugadores(false);
                                     break;
                                 case 2:
                                     // Código para Agregar
@@ -636,10 +644,63 @@ int main()
                                     break;
                                 case 3:
                                     // Código para Modificar
-                                    break;
+                                    {
+                                        int seleccionJugador;
+                                        cout << endl;
+                                        do
+                                        {
+                                            equipos->mostrarJugadores(true);
+                                            cin >> seleccionJugador;
+                                            seleccionJugador--;
+                                        } while (seleccionJugador < 0 || seleccionJugador >= equipos[seleccionEquipo].cantidadJugadores);
+                                        int opcion = 0;
+                                        while (opcion < 1 || opcion > 5)
+                                        {
+                                            cout << "1) Nombre: " << equipos[seleccionEquipo].jugadores[seleccionJugador].nombre << endl;
+                                            cout << "2) Apellido: " << equipos[seleccionEquipo].jugadores[seleccionJugador].apellido << endl;
+                                            cout << "3) Posicion: " << equipos[seleccionEquipo].jugadores[seleccionJugador].posicion << endl;
+                                            cout << "4) Experiencia: " << equipos[seleccionEquipo].jugadores[seleccionJugador].experiencia << endl;
+                                            cout << "5) Volver" << endl;
+                                            cin >> opcion;
+                                            switch (opcion)
+                                            {
+                                            case 1:
+                                                cin >> equipos[seleccionEquipo].jugadores[seleccionJugador].nombre;
+                                                cout << equipos[seleccionEquipo].jugadores[seleccionJugador].mostrarDatos() << endl;
+                                                break;
+                                            case 2:
+                                                cin >> equipos[seleccionEquipo].jugadores[seleccionJugador].apellido;
+                                                cout << equipos[seleccionEquipo].jugadores[seleccionJugador].mostrarDatos() << endl;
+                                                break;
+                                            case 3:
+                                                cin >> equipos[seleccionEquipo].jugadores[seleccionJugador].posicion;
+                                                cout << equipos[seleccionEquipo].jugadores[seleccionJugador].mostrarDatos() << endl;
+                                                break;
+                                            case 4:
+                                                cin >> equipos[seleccionEquipo].jugadores[seleccionJugador].experiencia;
+                                                cout << equipos[seleccionEquipo].jugadores[seleccionJugador].mostrarDatos() << endl;
+                                                break;
+                                            default:
+                                                cout << endl;
+                                                break;
+                                            }
+                                        }
+                                        break;
+                                    }
                                 case 4:
                                     // Código para Eliminar
-                                    break;
+                                    {
+                                        int seleccionJugador;
+                                        cout << endl;
+                                        do
+                                        {
+                                            equipos->mostrarJugadores(true);
+                                            cin >> seleccionJugador;
+                                            seleccionJugador--;
+                                        } while (seleccionJugador < 0 || seleccionJugador >= equipos[seleccionEquipo].cantidadJugadores);
+                                        equipos->eliminarJugador(seleccionJugador);
+                                        break;
+                                    }
                                 case 5:
                                     // Regresar al subsubmenú Listar Todos
                                     cout << endl;
@@ -653,7 +714,7 @@ int main()
                         case 2:
                             // Código para Ver Mejores Jugadores
                             equipos[seleccionEquipo].ordernarPorExperiencia(0, equipos[seleccionEquipo].cantidadJugadores - 1);
-                            equipos[seleccionEquipo].mostrarJugadores();
+                            equipos[seleccionEquipo].mostrarJugadores(false);
                             break;
                         case 3:
                             // Código para Ver Lesionados
@@ -870,10 +931,14 @@ int main()
                 case 4:
                 {
                     // Código para Modificar
-                    directores->listar(directores, directoresLongitud, true);
                     int opcionDirector = 0;
-                    cin >> opcionDirector;
-                    directores->modificar(directores[opcionDirector - 1]);
+                    do
+                    {
+                        directores->listar(directores, directoresLongitud, true);
+                        cin >> opcionDirector;
+                        opcionDirector--;
+                    } while (opcionDirector < 0 || opcionDirector >= directoresLongitud);
+                    directores->modificar(directores[opcionDirector]);
                     break;
                 }
                 case 5:
