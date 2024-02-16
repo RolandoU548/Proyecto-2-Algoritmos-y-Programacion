@@ -67,23 +67,20 @@ public:
     {
         return equipo + " " + nombre + " " + apellido + " " + posicion + " " + to_string(experiencia);
     }
-    void listar(string posicion, Jugador jugadores[], int jugadoresLongitud, bool mejores)
+    void listar(Jugador jugadores[], int jugadoresLongitud, bool experiencia, bool goleadores)
     {
-        if (mejores)
+        if (experiencia)
         {
-            if (posicion == "")
-            {
-                // funcion ordenar segun goles
-            }
-            else
-            {
-                // funcion ordenar segun experiencia
-            }
+            jugadores->ordenarPorExperiencia(jugadores, 0, jugadoresLongitud);
+        }
+        else if (goleadores)
+        {
+            jugadores->ordenarPorGoles(jugadores, 0, jugadoresLongitud);
         }
         for (int i = 0; i < jugadoresLongitud; i++)
         {
             // Goleadores
-            if (posicion == "" && mejores)
+            if (goleadores)
             {
                 if (jugadores[i].goles > 0)
                 {
@@ -95,9 +92,116 @@ public:
                 }
             }
             // Posicion
-            else if (posicion == jugadores[i].posicion)
+            else
                 cout << jugadores[i].mostrarDatos() << endl;
         }
+    }
+    void actualizarPosiciones(Jugador jugadores[], int jugadoresLongitud, Jugador porteros[], int &porterosLongitud, Jugador defensas[], int &defensasLongitud, Jugador mediocampistas[], int &mediocampistasLongitud, Jugador delanteros[], int &delanterosLongitud)
+    {
+        int pt = 0, df = 0, md = 0, dl = 0;
+        porterosLongitud = defensasLongitud = mediocampistasLongitud = delanterosLongitud = 0;
+        for (int i = 0; i < jugadoresLongitud; i++)
+        {
+            if (jugadores[i].posicion == "Portero")
+            {
+                porteros[pt++] = jugadores[i];
+                porterosLongitud++;
+            }
+            else if (jugadores[i].posicion == "Defensa")
+            {
+                defensas[df++] = jugadores[i];
+                defensasLongitud++;
+            }
+            else if (jugadores[i].posicion == "Mediocampista")
+            {
+                mediocampistas[md] = jugadores[i];
+                mediocampistasLongitud++;
+            }
+            else if (jugadores[i].posicion == "Delantero")
+            {
+                delanteros[dl++] = jugadores[i];
+                delanterosLongitud++;
+            }
+        }
+    }
+    void ordenarPorExperiencia(Jugador jugadores[], int inicio, int fin)
+    {
+        int izq, der, piv, aux;
+        izq = inicio;
+        der = fin;
+        piv = jugadores[(izq + der) / 2].experiencia;
+
+        do
+        {
+            while (jugadores[izq].experiencia > piv && izq < fin)
+            {
+                izq++;
+            }
+            while (jugadores[der].experiencia < piv && der > inicio)
+            {
+                der--;
+            }
+            if (izq <= der)
+            {
+                aux = jugadores[izq].experiencia;
+                jugadores[izq].experiencia = jugadores[der].experiencia;
+                jugadores[der].experiencia = aux;
+                izq++;
+                der--;
+            }
+        } while (izq <= der);
+
+        if (inicio <= der)
+        {
+            ordenarPorExperiencia(jugadores, inicio, der);
+        }
+
+        if (fin > izq)
+        {
+            ordenarPorExperiencia(jugadores, izq, fin);
+        }
+    }
+    void ordenarPorGoles(Jugador jugadores[], int inicio, int fin)
+    {
+        int izq, der, piv, aux;
+        izq = inicio;
+        der = fin;
+        piv = jugadores[(izq + der) / 2].goles;
+
+        do
+        {
+            while (jugadores[izq].goles > piv && izq < fin)
+            {
+                izq++;
+            }
+            while (jugadores[der].goles < piv && der > inicio)
+            {
+                der--;
+            }
+            if (izq <= der)
+            {
+                aux = jugadores[izq].goles;
+                jugadores[izq].goles = jugadores[der].goles;
+                jugadores[der].goles = aux;
+                izq++;
+                der--;
+            }
+        } while (izq <= der);
+
+        if (inicio <= der)
+        {
+            ordenarPorGoles(jugadores, inicio, der);
+        }
+
+        if (fin > izq)
+        {
+            ordenarPorGoles(jugadores, izq, fin);
+        }
+    }
+    void eliminar(Jugador jugadores[], int jugadoresLongitud, int jugadorPosicion)
+    {
+        for (int i = jugadorPosicion; i < jugadoresLongitud; i++)
+            jugadores[i] = jugadores[i + 1];
     }
 };
 
@@ -169,9 +273,7 @@ public:
     void eliminar(DirectorTecnico directores[], int directoresLongitud, int directorPosicion)
     {
         for (int i = directorPosicion; i < directoresLongitud; i++)
-        {
             directores[i] = directores[i + 1];
-        }
     }
     void ordenarPorExperiencia(DirectorTecnico directores[], int inicio, int fin)
     {
@@ -234,7 +336,7 @@ public:
             jugadores[i] = _jugadores[i];
             if (_jugadores[i].posicion == "Portero")
             {
-                porteros[cantidadPorteros++] = _jugadores[i];
+                porteros[cantidadPorteros++] = _jugadores[i];   
             }
             else if (_jugadores[i].posicion == "Delantero")
             {
@@ -319,6 +421,33 @@ public:
         {
             cout << i + 1 << ") " << equipos[i].nombre << endl;
         }
+    }
+    void agregar()
+    {
+        string nuevoEquipo = "";
+        cin >> nuevoEquipo;
+        nombre = nuevoEquipo;
+    }
+    void modificar(Equipo &equipo, Jugador jugadores[], int jugadoresLongitud)
+    {
+        string antiguoNombre = equipo.nombre;
+        string nuevoNombre = "";
+        cin >> nuevoNombre;
+        equipo.nombre = nuevoNombre;
+        for (int i = 0; i < equipo.cantidadJugadores; i++)
+        {
+            equipo.jugadores[i].equipo = nuevoNombre;
+        }
+        for (int i = 0; i < jugadoresLongitud; i++)
+        {
+            if (jugadores[i].equipo == antiguoNombre)
+                jugadores[i].equipo = nuevoNombre;
+        }
+    }
+    void eliminar(Equipo equipos[], int equiposLongitud, int equipoPosicion)
+    {
+        for (int i = equipoPosicion; i < equiposLongitud; i++)
+            equipos[i] = equipos[i + 1];
     }
 };
 
@@ -428,6 +557,13 @@ void identificarDirectorTecnico(string directorTecnico, string &nombreDirectorTe
     }
 }
 
+// Procesar archivo de jornada.in
+void procesarJornada(string jornada)
+{
+    ifstream archivoJornada;
+    archivoJornada.open(jornada);
+}
+
 // Actualizar datos de salida entrada.in
 void guardarDatosEnArchivo(string archivo, Equipo equipos[], int equiposLongitud, Jugador jugadores[], int jugadoresLongitud, DirectorTecnico directores[], int directoresLongitud)
 {
@@ -441,6 +577,7 @@ void guardarDatosEnArchivo(string archivo, Equipo equipos[], int equiposLongitud
     }
 
     archivoSalida << "J" << endl;
+    //cambiar por, bucle que se repite para cantidad de equipos, y subbucle para cantidad de jugadores de equipo
     for (int i = 0; i < jugadoresLongitud; i++)
     {
         archivoSalida << jugadores[i].equipo << " " << jugadores[i].nombre << " " << jugadores[i].apellido << " " << jugadores[i].posicion << " " << jugadores[i].experiencia << endl;
@@ -455,6 +592,15 @@ void guardarDatosEnArchivo(string archivo, Equipo equipos[], int equiposLongitud
 
 int main()
 {
+    Jugador porteros[100];
+    Jugador defensas[100];
+    Jugador mediocampistas[100];
+    Jugador delanteros[100];
+    int cantidadPorteros = 0;
+    int cantidadDefensas = 0;
+    int cantidadDeMediocampistas = 0;
+    int cantidadDelanteros = 0;
+
     string equiposPrev[20];
     string jugadoresPrev[100];
     string directoresPrev[30];
@@ -475,6 +621,7 @@ int main()
         jugadoresLongitud++;
         equipoJugador = nombreJugador = apellidoJugador = posicionJugador = experienciaJugador = "";
     }
+    jugadores->actualizarPosiciones(jugadores, jugadoresLongitud, porteros, cantidadPorteros, defensas, cantidadDefensas, mediocampistas, cantidadDeMediocampistas, delanteros, cantidadDelanteros);
 
     // Crear lista de objetos de equipos
     Equipo equipos[20];
@@ -509,7 +656,6 @@ int main()
         directoresLongitud++;
         nombreDirectorTecnico = apellidoDirectorTecnico = experienciaDirectorTecnico = "";
     }
-    directores->ordenarPorExperiencia(directores, 0, directoresLongitud);
 
     // Imprimir Equipos
     cout << "EQUIPOS" << endl;
@@ -562,20 +708,40 @@ int main()
                 {
                 case 1:
                     // Código para Agregar
+                    equipos[equiposLongitud].agregar();
                     equiposLongitud++;
-                    // equipos->agregar(equipos[equiposLongitud - 1]);
                     break;
                 case 2:
+                {
                     // Código para Modificar
+                    equipos->listar(equipos, equiposLongitud);
+                    int opcionEquipo = 0;
+                    string equipoModificado;
+                    cin >> opcionEquipo;
+                    equipos->modificar(equipos[opcionEquipo - 1], jugadores, jugadoresLongitud);
+                    jugadores->actualizarPosiciones(jugadores, jugadoresLongitud, porteros, cantidadPorteros, defensas, cantidadDefensas, mediocampistas, cantidadDeMediocampistas, delanteros, cantidadDelanteros);
+                }
                     break;
                 case 3:
                 {
                     // Código para Eliminar
                     equipos->listar(equipos, equiposLongitud);
                     int opcionEquipo = 0;
+                    string equipoEliminado;
                     cin >> opcionEquipo;
+                    equipoEliminado = equipos[opcionEquipo - 1].nombre;
                     equiposLongitud--;
-                    // equipos->eliminar(equipos, equiposLongitud, opcionEquipo - 1);
+                    equipos->eliminar(equipos, equiposLongitud, opcionEquipo - 1);
+                    for (int i = 0; i < jugadoresLongitud; i++)
+                    {
+                        if (jugadores[i].equipo == equipoEliminado)
+                        {
+                            jugadoresLongitud--;
+                            jugadores->eliminar(jugadores, jugadoresLongitud, i);
+                            i--;
+                        }
+                    }
+                    jugadores->actualizarPosiciones(jugadores, jugadoresLongitud, porteros, cantidadPorteros, defensas, cantidadDefensas, mediocampistas, cantidadDeMediocampistas, delanteros, cantidadDelanteros);
                     break;
                 }
                 case 4:
@@ -708,11 +874,11 @@ int main()
                         {
                         case 1:
                             // Código para Mostrar Todos los Porteros
-                            jugadores->listar("Portero", jugadores, jugadoresLongitud, false);
+                            jugadores->listar(porteros, cantidadPorteros, false, false);
                             break;
                         case 2:
                             // Código para Mostrar Los Mejores Porteros
-                            jugadores->listar("Portero", jugadores, jugadoresLongitud, true);
+                            jugadores->listar(porteros, cantidadPorteros, true, false);
                             break;
                         case 3:
                             // Regresar al submenú Jugadores
@@ -739,11 +905,11 @@ int main()
                         {
                         case 1:
                             // Código para Mostrar Todos los Defensas
-                            jugadores->listar("Defensa", jugadores, jugadoresLongitud, false);
+                            jugadores->listar(defensas, cantidadDefensas, false, false);
                             break;
                         case 2:
                             // Código para Mostrar Los Mejores Defensas
-                            jugadores->listar("Defensa", jugadores, jugadoresLongitud, true);
+                            jugadores->listar(defensas, cantidadDefensas, true, false);
                             break;
                         case 3:
                             // Regresar al submenú Jugadores
@@ -770,11 +936,11 @@ int main()
                         {
                         case 1:
                             // Código para Mostrar Todos los Mediocampistas
-                            jugadores->listar("Mediocampista", jugadores, jugadoresLongitud, false);
+                            jugadores->listar(mediocampistas, cantidadDeMediocampistas, false, false);
                             break;
                         case 2:
                             // Código para Mostrar Los Mejores Mediocampistas
-                            jugadores->listar("Mediocampista", jugadores, jugadoresLongitud, true);
+                            jugadores->listar(mediocampistas, cantidadDeMediocampistas, true, false);
                             break;
                         case 3:
                             // Regresar al submenú Jugadores
@@ -801,11 +967,11 @@ int main()
                         {
                         case 1:
                             // Código para Mostrar Todos los Delanteros
-                            jugadores->listar("Delantero", jugadores, jugadoresLongitud, false);
+                            jugadores->listar(delanteros, cantidadDelanteros, false, false);
                             break;
                         case 2:
                             // Código para Mostrar Los Mejores Delanteros
-                            jugadores->listar("Delantero", jugadores, jugadoresLongitud, true);
+                            jugadores->listar(delanteros, cantidadDelanteros, true, false);
                             break;
                         case 3:
                             // Regresar al submenú Jugadores
@@ -819,7 +985,7 @@ int main()
                     break;
                 case 5:
                     // Código para la Mostrar Goleadores
-                    jugadores->listar("", jugadores, jugadoresLongitud, true);
+                    jugadores->listar(jugadores, jugadoresLongitud, false, true);
                     break;
                 case 6:
                     // Regresar al menú principal
@@ -853,6 +1019,7 @@ int main()
                     break;
                 case 2:
                     // Código para Mostrar Los mas experimentados
+                    directores->ordenarPorExperiencia(directores, 0, directoresLongitud); 
                     directores->listar(directores, directoresLongitud, false);
                     break;
                 case 3:
@@ -872,9 +1039,9 @@ int main()
                 case 5:
                 {
                     // Código para Eliminar
-                    directores->listar(directores, directoresLongitud, true);
                     int opcionDirector = 0;
                     cin >> opcionDirector;
+                    directores->listar(directores, directoresLongitud, true);
                     directoresLongitud--;
                     directores->eliminar(directores, directoresLongitud, opcionDirector - 1);
                     break;
@@ -901,8 +1068,13 @@ int main()
                 switch (opcion2)
                 {
                 case 1:
+                {
                     // Código para Cargar Partidos
+                    string direccionJornada = "";
+                    cin >> direccionJornada;
+
                     break;
+                }
                 case 2:
                     // Regresar al menú principal
                     cout << endl;
@@ -925,5 +1097,9 @@ int main()
     // jugadores[jugadoresLongitud] = { "Canaimita Patriota", "Javier", "Hernandez", "Defensa", 5, 2, "Incorporado" }; jugadoresLongitud++;
     // listarJugadores("", jugadores, jugadoresLongitud, true);
     // guardarDatosEnArchivo("entrada.in", equipos, equiposLongitud, jugadores, jugadoresLongitud, directores, directoresLongitud);
+    for (int i = 0; i < jugadoresLongitud; i++)
+    {
+        cout << jugadores[i].mostrarDatos() << endl;
+    }
     return 0;
 }
