@@ -864,8 +864,8 @@ int main()
                     break;
                 case 3:
                     // Código para Agregar
+                    directores->agregar(directores[directoresLongitud]);
                     directoresLongitud++;
-                    directores->agregar(directores[directoresLongitud - 1]);
                     break;
                 case 4:
                 {
