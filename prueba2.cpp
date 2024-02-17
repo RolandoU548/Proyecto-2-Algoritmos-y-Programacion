@@ -16,7 +16,7 @@ bool validarLinea(string linea, string equipos[], int equiposLongitud)
     return false;
 }
 
-void procesarPartido(string entrada, string lineas[], int &cantidadLineas, string equipos[], int equiposLongitud)
+void procesarJornada(string entrada, string lineas[], int &cantidadLineas, string equipos[], int equiposLongitud)
 {
     ifstream archivoEntrada;
     archivoEntrada.open(entrada);
@@ -76,7 +76,7 @@ string identificarActuaciones(string linea, string equipos[], int equiposLongitu
 int calcularExperiencia(string linea)
 {
     string palabraBuscar;
-    string actuaciones[16] = {
+    string actuaciones[18] = {
         "Tiro al arco",
         "Entrada eficaz",
         "Saludo al publico",
@@ -85,6 +85,7 @@ int calcularExperiencia(string linea)
         "Atajada",
         "Centro eficaz",
         "Regate",
+        "Reincorporacion",
         "Tiro a las gradas",
         "Entrada a destiempo",
         "Insulto al arbitro",
@@ -92,10 +93,9 @@ int calcularExperiencia(string linea)
         "Tarjeta",
         "Mal despeje",
         "Mano al balon",
-        "Cansancio",
-    };
+        "Cansancio", "Lesion"};
     int contador = 0;
-    for (int h = 0; h < 16; h++)
+    for (int h = 0; h < 18; h++)
     {
         palabraBuscar = actuaciones[h];
         for (int i = 0; i < linea.length(); i++)
@@ -107,7 +107,7 @@ int calcularExperiencia(string linea)
             }
             if (j == palabraBuscar.length() && (i + j == linea.length() || linea[i + j] == ' '))
             {
-                if (h < 8)
+                if (h < 9)
                     contador++;
                 else
                     contador--;
@@ -121,16 +121,16 @@ int main()
 {
     string equipos[10] = {"Caracas FC", "Manchester City", "Inter Miami", "Al Nassr"};
     int equiposLongitud = 4;
-    // procesarPartidos("jornada1.in");
+    // procesarJornada("jornada1.in");
     string lineas[100];
     int cantidadLineas = 0;
     string equipoJugador, nombreJugador, apellidoJugador;
-    procesarPartido("jornada2.in", lineas, cantidadLineas, equipos, equiposLongitud);
+    procesarJornada("jornada2.in", lineas, cantidadLineas, equipos, equiposLongitud);
     for (int i = 0; i < cantidadLineas; i++)
     {
         cout << lineas[i] << endl;
         cout << identificarActuaciones(lineas[i], equipos, equiposLongitud, equipoJugador, nombreJugador, apellidoJugador) << endl;
         cout << calcularExperiencia(identificarActuaciones(lineas[i], equipos, equiposLongitud, equipoJugador, nombreJugador, apellidoJugador)) << endl;
-        equipos[equipos->buscarEquipo(equipos, equiposLongitud, equipoJugador)].jugadores[equipos[equipos->buscarEquipo(equipos, equiposLongitud, equipoJugador)].buscarJugador(nombreJugador, apellidoJugador)].experiencia += equipos[equipos->buscarEquipo(equipos, equiposLongitud, equipoJugador)].jugadores[equipos[equipos->buscarEquipo(equipos, equiposLongitud, equipoJugador)].buscarJugador(nombreJugador, apellidoJugador)].experiencia + calcularExperiencia(identificarActuaciones(lineas[i], equipos, equiposLongitud, equipoJugador, nombreJugador, apellidoJugador));
+        // equipos[equipos->buscarEquipo(equipos, equiposLongitud, equipoJugador)].jugadores[equipos[equipos->buscarEquipo(equipos, equiposLongitud, equipoJugador)].buscarJugador(nombreJugador, apellidoJugador)].experiencia += equipos[equipos->buscarEquipo(equipos, equiposLongitud, equipoJugador)].jugadores[equipos[equipos->buscarEquipo(equipos, equiposLongitud, equipoJugador)].buscarJugador(nombreJugador, apellidoJugador)].experiencia + calcularExperiencia(identificarActuaciones(lineas[i], equipos, equiposLongitud, equipoJugador, nombreJugador, apellidoJugador));
     }
 }
