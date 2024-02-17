@@ -216,7 +216,7 @@ public:
     void mostrarNuevos(Jugador nuevos[], int jugadoresLongitud, string nombreEquipo)
     {
         int cont = 0;
-        for (int i = jugadoresLongitud-1; i >= 0; i--)
+        for (int i = jugadoresLongitud - 1; i >= 0; i--)
         {
             if (cont >= 5)
                 break;
@@ -417,7 +417,7 @@ public:
 
     string mostrarDatos()
     {
-        //return nombre + " " + to_string(cantidadJugadores) + " " + to_string();
+        // return nombre + " " + to_string(cantidadJugadores) + " " + to_string();
     }
     void mostrarJugadores(bool enumerado)
     {
@@ -451,7 +451,7 @@ public:
         cin >> nuevoEquipo;
         nombre = nuevoEquipo;
     }
-    void modificar(Equipo& equipo, Jugador jugadores[], int jugadoresLongitud)
+    void modificar(Equipo &equipo, Jugador jugadores[], int jugadoresLongitud)
     {
         string antiguoNombre = equipo.nombre;
         string nuevoNombre = "";
@@ -586,9 +586,25 @@ void procesarJornada(string jornada, Jugador jugadores[])
 {
     ifstream archivoJornada;
     string actuacion = "";
-    string actuaciones[16] = {"Tiro al arco", "Entrada eficaz", "Saludo al publico", "Gol", "Pase", "Atajada", "Centro eficaz", "Regate",
-                              "Turo a las gradas", "Entrada a destiempo", "Insulto al arbitro", "Falta", "Tarjeta", "Mal despeje", "Mano al balon", "Casancio",};
-    
+    string actuaciones[16] = {
+        "Tiro al arco",
+        "Entrada eficaz",
+        "Saludo al publico",
+        "Gol",
+        "Pase",
+        "Atajada",
+        "Centro eficaz",
+        "Regate",
+        "Tiro a las gradas",
+        "Entrada a destiempo",
+        "Insulto al arbitro",
+        "Falta",
+        "Tarjeta",
+        "Mal despeje",
+        "Mano al balon",
+        "Cansancio",
+    };
+
     archivoJornada.open(jornada);
 
     archivoJornada.close();
@@ -635,7 +651,7 @@ void guardarDatosEnArchivo(string archivo, Equipo equipos[], int equiposLongitud
     }
 
     archivoSalida << "J" << endl;
-    //cambiar por, bucle que se repite para cantidad de equipos, y subbucle para cantidad de jugadores de equipo
+    // cambiar por, bucle que se repite para cantidad de equipos, y subbucle para cantidad de jugadores de equipo
     for (int i = 0; i < equiposLongitud; i++)
     {
         for (int j = 0; j < equipos[i].cantidadJugadores; j++)
@@ -793,7 +809,7 @@ int main()
                     equipos->modificar(equipos[opcionEquipo - 1], jugadores, jugadoresLongitud);
                     jugadores->actualizarPosiciones(jugadores, jugadoresLongitud, porteros, cantidadPorteros, defensas, cantidadDefensas, mediocampistas, cantidadDeMediocampistas, delanteros, cantidadDelanteros);
                 }
-                    break;
+                break;
                 case 3:
                 {
                     // Código para Eliminar
@@ -878,7 +894,7 @@ int main()
                                         nuevos[jugadoresLongitud] = jugadores[jugadoresLongitud];
                                         jugadoresLongitud++;
                                         jugadores->actualizarPosiciones(jugadores, jugadoresLongitud, porteros, cantidadPorteros, defensas, cantidadDefensas, mediocampistas, cantidadDeMediocampistas, delanteros, cantidadDelanteros);
-                                    break;
+                                        break;
                                     }
                                 case 3:
                                     // Código para Modificar
@@ -1270,12 +1286,12 @@ int main()
     }
     // jugadores[jugadoresLongitud] = { "Canaimita Patriota", "Javier", "Hernandez", "Defensa", 5, 2, "Incorporado" }; jugadoresLongitud++;
     // listarJugadores("", jugadores, jugadoresLongitud, true);
-    //guardarDatosEnArchivo("entrada.in", equipos, equiposLongitud, jugadores, jugadoresLongitud, directores, directoresLongitud);
-    
+    // guardarDatosEnArchivo("entrada.in", equipos, equiposLongitud, jugadores, jugadoresLongitud, directores, directoresLongitud);
+
     for (int i = 0; i < jugadoresLongitud; i++)
     {
         cout << nuevos[i].mostrarDatos() << endl;
     }
-    
+
     return 0;
 }
