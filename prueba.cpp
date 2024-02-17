@@ -702,18 +702,6 @@ void calcularExperiencia(Jugador &jugador, string linea)
     for (int h = 0; h < 18; h++)
     {
         actuacion = actuaciones[h];
-        if (actuacion == "Reincorporacion")
-        {
-            jugador.estado = "Incorporado";
-        }
-        else if (actuacion == "Lesion")
-        {
-            jugador.estado = "Lesionado";
-        }
-        else if (actuacion == "Gol")
-        {
-            jugador.goles++;
-        }
         for (int i = 0; i < linea.length(); i++)
         {
             int j = 0;
@@ -723,6 +711,18 @@ void calcularExperiencia(Jugador &jugador, string linea)
             }
             if (j == actuacion.length() && (i + j == linea.length() || linea[i + j] == ' '))
             {
+                if (actuacion == "Reincorporacion")
+                {
+                    jugador.estado = "Incorporado";
+                }
+                else if (actuacion == "Lesion")
+                {
+                    jugador.estado = "Lesionado";
+                }
+                else if (actuacion == "Gol")
+                {
+                    jugador.goles++;
+                }
                 if (h < 9)
                     jugador.experiencia++;
                 else
@@ -1390,8 +1390,6 @@ int main()
                     procesarJornada(direccionJornada, lineas, cantidadLineas, equipos, equiposLongitud);
                     for (int i = 0; i < cantidadLineas; i++)
                     {
-                        cout << lineas[i] << endl;
-                        cout << identificarActuaciones(lineas[i], equipos, equiposLongitud, equipoJugador, nombreJugador, apellidoJugador) << endl;
                         calcularExperiencia(equipos[equipos->buscarEquipo(equipos, equiposLongitud, equipoJugador)].jugadores[equipos[equipos->buscarEquipo(equipos, equiposLongitud, equipoJugador)].buscarJugador(nombreJugador, apellidoJugador)], identificarActuaciones(lineas[i], equipos, equiposLongitud, equipoJugador, nombreJugador, apellidoJugador));
                     }
                     break;
