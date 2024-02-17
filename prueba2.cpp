@@ -119,17 +119,18 @@ int calcularExperiencia(string linea)
 
 int main()
 {
-    string equiposPrev[10] = {"Caracas FC", "Manchester City", "Inter Miami", "Al Nassr"};
-    int equiposPrevLongitud = 4;
+    string equipos[10] = {"Caracas FC", "Manchester City", "Inter Miami", "Al Nassr"};
+    int equiposLongitud = 4;
     // procesarPartidos("jornada1.in");
     string lineas[100];
     int cantidadLineas = 0;
     string equipoJugador, nombreJugador, apellidoJugador;
-    procesarPartido("jornada2.in", lineas, cantidadLineas, equiposPrev, equiposPrevLongitud);
+    procesarPartido("jornada2.in", lineas, cantidadLineas, equipos, equiposLongitud);
     for (int i = 0; i < cantidadLineas; i++)
     {
         cout << lineas[i] << endl;
-        cout << identificarActuaciones(lineas[i], equiposPrev, equiposPrevLongitud, equipoJugador, nombreJugador, apellidoJugador) << endl;
-        cout << calcularExperiencia(identificarActuaciones(lineas[i], equiposPrev, equiposPrevLongitud, equipoJugador, nombreJugador, apellidoJugador)) << endl;
+        cout << identificarActuaciones(lineas[i], equipos, equiposLongitud, equipoJugador, nombreJugador, apellidoJugador) << endl;
+        cout << calcularExperiencia(identificarActuaciones(lineas[i], equipos, equiposLongitud, equipoJugador, nombreJugador, apellidoJugador)) << endl;
+        equipos[equipos->buscarEquipo(equipos, equiposLongitud, equipoJugador)].jugadores[equipos[equipos->buscarEquipo(equipos, equiposLongitud, equipoJugador)].buscarJugador(nombreJugador, apellidoJugador)].experiencia += equipos[equipos->buscarEquipo(equipos, equiposLongitud, equipoJugador)].jugadores[equipos[equipos->buscarEquipo(equipos, equiposLongitud, equipoJugador)].buscarJugador(nombreJugador, apellidoJugador)].experiencia + calcularExperiencia(identificarActuaciones(lineas[i], equipos, equiposLongitud, equipoJugador, nombreJugador, apellidoJugador));
     }
 }

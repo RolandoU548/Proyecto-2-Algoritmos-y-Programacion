@@ -417,7 +417,7 @@ public:
 
     string mostrarDatos()
     {
-        // return nombre + " " + to_string(cantidadJugadores) + " " + to_string();
+        return nombre + " " + to_string(cantidadJugadores);
     }
     void mostrarJugadores(bool enumerado)
     {
@@ -428,6 +428,26 @@ public:
             cout << jugadores[i].mostrarDatos() << endl;
         }
     };
+    int buscarJugador(string nombre, string apellido)
+    {
+        for (int i = 0; i < cantidadJugadores; i++)
+        {
+            if (jugadores[i].nombre == nombre && jugadores[i].apellido == apellido)
+            {
+                return i;
+            }
+        }
+    }
+    int buscarEquipo(Equipo equipos[], int equiposLongitud, string nombre)
+    {
+        for (int i = 0; i < equiposLongitud; i++)
+        {
+            if (equipos[i].nombre == nombre)
+            {
+                return i;
+            }
+        }
+    }
     void mostrarLesionados()
     {
         for (int i = 0; i < cantidadJugadores; i++)
