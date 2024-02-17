@@ -80,28 +80,25 @@ public:
         if (experiencia)
         {
             jugadores->ordenarPorExperiencia(jugadores, 0, jugadoresLongitud);
+            for (int i = 0; i < jugadoresLongitud; i++)
+            {
+                cout << jugadores[i].mostrarDatos() << endl;
+            }
         }
         else if (goleadores)
         {
             jugadores->ordenarPorGoles(jugadores, 0, jugadoresLongitud);
-        }
-        for (int i = 0; i < jugadoresLongitud; i++)
-        {
-            // Goleadores
-            if (goleadores)
+            for (int i = 0; i < jugadoresLongitud; i++)
             {
                 if (jugadores[i].goles > 0)
                 {
-                    cout << jugadores[i].mostrarDatos() << " " << jugadores[i].goles;
+                    cout << jugadores[i].mostrarDatos() << " " << jugadores[i].goles << " ";
                     if (jugadores[i].goles == 1)
-                        cout << " Gol" << endl;
+                        cout << "Gol" << endl;
                     else
-                        cout << " Goles" << endl;
+                        cout << "Goles" << endl;
                 }
             }
-            // Posicion
-            else
-                cout << jugadores[i].mostrarDatos() << endl;
         }
     }
     void actualizarPosiciones(Jugador jugadores[], int jugadoresLongitud, Jugador porteros[], int &porterosLongitud, Jugador defensas[], int &defensasLongitud, Jugador mediocampistas[], int &mediocampistasLongitud, Jugador delanteros[], int &delanterosLongitud)
@@ -226,6 +223,17 @@ public:
                 cont++;
             }
         }
+    }
+    int buscarJugador(Jugador jugadores[], int cantidadJugadores, string nombre, string apellido)
+    {
+        for (int i = 0; i < cantidadJugadores; i++)
+        {
+            if (jugadores[i].nombre == nombre && jugadores[i].apellido == apellido)
+            {
+                return i;
+            }
+        }
+        return -1;
     }
 };
 
@@ -1391,6 +1399,7 @@ int main()
                     for (int i = 0; i < cantidadLineas; i++)
                     {
                         calcularExperiencia(equipos[equipos->buscarEquipo(equipos, equiposLongitud, equipoJugador)].jugadores[equipos[equipos->buscarEquipo(equipos, equiposLongitud, equipoJugador)].buscarJugador(nombreJugador, apellidoJugador)], identificarActuaciones(lineas[i], equipos, equiposLongitud, equipoJugador, nombreJugador, apellidoJugador));
+                        calcularExperiencia(jugadores[jugadores->buscarJugador(jugadores, jugadoresLongitud, nombreJugador, apellidoJugador)], identificarActuaciones(lineas[i], equipos, equiposLongitud, equipoJugador, nombreJugador, apellidoJugador));
                     }
                     break;
                 }
