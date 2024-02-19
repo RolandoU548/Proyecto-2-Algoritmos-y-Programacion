@@ -375,7 +375,7 @@ public:
 
     string mostrarDatos()
     {
-        return nombre + " " + to_string(cantidadJugadores) + " " + to_string();
+        return nombre + " " + to_string(cantidadJugadores);
     }
     void mostrarJugadores()
     {
