@@ -183,7 +183,6 @@ public:
             if (equipo == jugadores[i].equipo && nombre == jugadores[i].nombre && apellido == jugadores[i].apellido && posicion == jugadores[i].posicion && experiencia == jugadores[i].experiencia)
                 return i;
         }
-<<<<<<< HEAD
     }
     int buscarJugador(Jugador jugadores[], int cantidadJugadores, string nombre, string apellido)
     {
@@ -194,8 +193,6 @@ public:
                 return i;
             }
         }
-=======
->>>>>>> 0af676137a6930f35ac1066f34259243b9288d44
         return -1;
     }
 };
@@ -1024,13 +1021,8 @@ int main()
                             }
                             break;
                         case 2:
-<<<<<<< HEAD
-                            // Codigo para Mostrar Los Mejores Porteros
-                            jugadores->actualizarJugadoresOdenados(jugadores, jugadoresOrdenados, jugadoresLongitud);
-=======
                             // Código para Mostrar Los Mejores Porteros
                             jugadores->actualizarJugadoresOrdenados(jugadores, jugadoresOrdenados, jugadoresLongitud);
->>>>>>> 0af676137a6930f35ac1066f34259243b9288d44
                             jugadores->listar(jugadoresOrdenados, "Portero", jugadoresLongitud, false);
                             break;
                         case 3:
@@ -1064,13 +1056,8 @@ int main()
                             }
                             break;
                         case 2:
-<<<<<<< HEAD
-                            // Codigo para Mostrar Los Mejores Defensas
-                            jugadores->actualizarJugadoresOdenados(jugadores, jugadoresOrdenados, jugadoresLongitud);
-=======
                             // Código para Mostrar Los Mejores Defensas
                             jugadores->actualizarJugadoresOrdenados(jugadores, jugadoresOrdenados, jugadoresLongitud);
->>>>>>> 0af676137a6930f35ac1066f34259243b9288d44
                             jugadores->listar(jugadoresOrdenados, "Defensa", jugadoresLongitud, false);
                             break;
                         case 3:
@@ -1104,13 +1091,8 @@ int main()
                             }
                             break;
                         case 2:
-<<<<<<< HEAD
-                            // Codigo para Mostrar Los Mejores Mediocampistas
-                            jugadores->actualizarJugadoresOdenados(jugadores, jugadoresOrdenados, jugadoresLongitud);
-=======
                             // Código para Mostrar Los Mejores Mediocampistas
                             jugadores->actualizarJugadoresOrdenados(jugadores, jugadoresOrdenados, jugadoresLongitud);
->>>>>>> 0af676137a6930f35ac1066f34259243b9288d44
                             jugadores->listar(jugadoresOrdenados, "Mediocampista", jugadoresLongitud, false);
                             break;
                         case 3:
@@ -1144,15 +1126,9 @@ int main()
                             }
                             break;
                         case 2:
-<<<<<<< HEAD
-                            // Codigo para Mostrar Los Mejores Delanteros
-                            jugadores->actualizarJugadoresOdenados(jugadores, jugadoresOrdenados, jugadoresLongitud);
-                            jugadores->listar(jugadoresOrdenados, "Delantero", jugadoresLongitud,false);
-=======
                             // Código para Mostrar Los Mejores Delanteros
                             jugadores->actualizarJugadoresOrdenados(jugadores, jugadoresOrdenados, jugadoresLongitud);
                             jugadores->listar(jugadoresOrdenados, "Delantero", jugadoresLongitud, false);
->>>>>>> 0af676137a6930f35ac1066f34259243b9288d44
                             break;
                         case 3:
                             // Regresar al submenu Jugadores
@@ -1282,18 +1258,14 @@ int main()
         }
         opcion2 = 0; // Reiniciar la opcion del submenu
     }
-<<<<<<< HEAD
     guardarDatosEnArchivo("entrada.in", equipos, equiposLongitud, jugadores, jugadoresLongitud, directores, directoresLongitud);
-=======
     // jugadores[jugadoresLongitud] = { "Canaimita Patriota", "Javier", "Hernandez", "Defensa", 5, 2, "Incorporado" }; jugadoresLongitud++;
     // listarJugadores("", jugadores, jugadoresLongitud, true);
-    // guardarDatosEnArchivo("entrada.in", equipos, equiposLongitud, jugadores, jugadoresLongitud, directores, directoresLongitud);
 
     /*for (int i = 0; i < jugadoresLongitud; i++)
     {
         cout << nuevos[i].mostrarDatos() << endl;
     }*/
 
->>>>>>> 0af676137a6930f35ac1066f34259243b9288d44
     return 0;
 }
