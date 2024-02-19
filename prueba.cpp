@@ -182,6 +182,7 @@ public:
             if (equipo == jugadores[i].equipo && nombre == jugadores[i].nombre && apellido == jugadores[i].apellido && posicion == jugadores[i].posicion && experiencia == jugadores[i].experiencia)
                 return i;
         }
+        return -1;
     }
 };
 
@@ -374,7 +375,7 @@ public:
 
     string mostrarDatos()
     {
-        //return nombre + " " + to_string(cantidadJugadores) + " " + to_string();
+        return nombre + " " + to_string(cantidadJugadores) + " " + to_string();
     }
     void mostrarJugadores()
     {
