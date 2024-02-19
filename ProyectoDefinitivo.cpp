@@ -62,14 +62,14 @@ public:
             }
         }
     }
-    
-    void actualizarJugadoresOdenados(Jugador jugadores[], Jugador jugadoresOrdenados[], int jugadoresLongitugd)
+
+    void actualizarJugadoresOrdenados(Jugador jugadores[], Jugador jugadoresOrdenados[], int jugadoresLongitud)
     {
-        for (int i = 0; i < jugadoresLongitugd; i++)
+        for (int i = 0; i < jugadoresLongitud; i++)
         {
             jugadoresOrdenados[i] = jugadores[i];
         }
-        ordenarPorExperiencia(jugadoresOrdenados, 0, jugadoresLongitugd);
+        ordenarPorExperiencia(jugadoresOrdenados, 0, jugadoresLongitud);
     }
 
     void actualizarJugadoresGoleadores(Jugador jugadores[], Jugador jugadoresGoleadores[], int jugadoresLongitugd)
@@ -183,6 +183,7 @@ public:
             if (equipo == jugadores[i].equipo && nombre == jugadores[i].nombre && apellido == jugadores[i].apellido && posicion == jugadores[i].posicion && experiencia == jugadores[i].experiencia)
                 return i;
         }
+<<<<<<< HEAD
     }
     int buscarJugador(Jugador jugadores[], int cantidadJugadores, string nombre, string apellido)
     {
@@ -193,6 +194,8 @@ public:
                 return i;
             }
         }
+=======
+>>>>>>> 0af676137a6930f35ac1066f34259243b9288d44
         return -1;
     }
 };
@@ -393,35 +396,13 @@ public:
     }
     void mostrarMejoresJugadores()
     {
-        jugadoresOrdenados->actualizarJugadoresOdenados(jugadores, jugadoresOrdenados, cantidadJugadores);
+        jugadoresOrdenados->actualizarJugadoresOrdenados(jugadores, jugadoresOrdenados, cantidadJugadores);
 
         for (int i = 0; i < cantidadJugadores; i++)
         {
             if (jugadoresOrdenados[i].estado == "Incorporado")
                 cout << jugadoresOrdenados[i].mostrarDatos() << endl;
         }
-    }
-    int buscarJugador(string nombre, string apellido)
-    {
-        for (int i = 0; i < cantidadJugadores; i++)
-        {
-            if (jugadores[i].nombre == nombre && jugadores[i].apellido == apellido)
-            {
-                return i;
-            }
-        }
-        return -1;
-    }
-    int buscarEquipo(Equipo equipos[], int equiposLongitud, string nombre)
-    {
-        for (int i = 0; i < equiposLongitud; i++)
-        {
-            if (equipos[i].nombre == nombre)
-            {
-                return i;
-            }
-        }
-        return -1;
     }
     void mostrarLesionados()
     {
@@ -433,7 +414,7 @@ public:
             }
         }
     }
-    Jugador seleccionarJugador (Jugador jugadores[], int jugadoresLongitud)
+    Jugador seleccionarJugador(Jugador jugadores[], int jugadoresLongitud)
     {
         Jugador jugadoresIncorporados[50];
         int jugadoresIncorporadosLongitud = 0;
@@ -530,7 +511,7 @@ void procesarEntrada(string entrada, string equiposPrev[], int &equiposPrevLongi
     archivoEntrada.close();
 };
 
-// Procesar Datos de Linea de Jugadores Y Añadirlos a su Equipo
+// Procesar Datos de Línea de Jugadores Y Añadirlos a su Equipo
 void identificarJugador(string jugador, string equiposPrev[], int equiposPrevLongitud, string &equipoJugador, string &nombreJugador, string &apellidoJugador, string &posicionJugador, string &experienciaJugador)
 {
     for (int i = 0; i < equiposPrevLongitud; i++)
@@ -571,7 +552,7 @@ void identificarJugador(string jugador, string equiposPrev[], int equiposPrevLon
     }
 }
 
-// Procesar Datos de Linea de Directores Tecnicos
+// Procesar Datos de Línea de Directores Tecnicos
 void identificarDirectorTecnico(string directorTecnico, string &nombreDirectorTecnico, string &apellidoDirectorTecnico, string &experienciaDirectorTecnico)
 {
     int addDirectorTecnico = 1;
@@ -598,84 +579,12 @@ void identificarDirectorTecnico(string directorTecnico, string &nombreDirectorTe
     }
 }
 
-// Funcion auxiliar de procesarJornada
-bool procesarLineaJornada(string linea, Equipo equipos[], int equiposLongitud)
-{
-    for (int i = 0; i < equiposLongitud; i++)
-    {
-        string equipo = equipos[i].nombre;
-        if (linea.substr(0, equipo.length()) == equipo && linea[equipo.length()] != '-')
-        {
-            return true;
-        }
-    }
-    return false;
-}
-
 // Procesar archivo de jornada.in
-void procesarJornada(string jornada, string lineas[], int &cantidadLineas, Equipo equipos[], int equiposLongitud)
+void procesarJornada(string jornada, Jugador jugadores[])
 {
-    ifstream archivoEntrada;
-    archivoEntrada.open(jornada);
-    string linea;
-    while (getline(archivoEntrada, linea))
-    {
-        if (procesarLineaJornada(linea, equipos, equiposLongitud))
-        {
-            lineas[cantidadLineas++] = linea;
-        };
-    }
-    archivoEntrada.close();
-}
-
-// Recuperar Actuaciones de Jugador Especifico
-string identificarActuaciones(string linea, Equipo equipos[], int equiposLongitud, string &equipoJugador, string &nombreJugador, string &apellidoJugador)
-{
-    equipoJugador = "";
-    nombreJugador = "";
-    apellidoJugador = "";
-    for (int i = 0; i < equiposLongitud; i++)
-    {
-        string equipo = equipos[i].nombre;
-        if (linea.find(equipo) != string::npos)
-        {
-            equipoJugador = equipo;
-            linea.erase(linea.find(equipo), equipo.length() + 1);
-        }
-    }
-
-    int addActuacion = 1;
-
-    for (char caracter : linea)
-    {
-        if (caracter == ' ')
-        {
-            addActuacion++;
-            continue;
-        }
-        if (addActuacion == 1)
-        {
-            nombreJugador += caracter;
-        }
-        else if (addActuacion == 2)
-        {
-            apellidoJugador += caracter;
-        }
-        else if (addActuacion == 3)
-        {
-            break;
-        }
-    }
-    linea.erase(linea.find(nombreJugador), nombreJugador.length() + 1);
-    linea.erase(linea.find(apellidoJugador), apellidoJugador.length() + 1);
-    return linea;
-}
-
-// Calcular la Experiencia Adquirida por un jugador segun su actuacion
-void calcularExperiencia(Jugador &jugador, string linea)
-{
-    string actuacion;
-    string actuaciones[18] = {
+    ifstream archivoJornada;
+    string actuacion = "";
+    string actuaciones[16] = {
         "Tiro al arco",
         "Entrada eficaz",
         "Saludo al publico",
@@ -684,47 +593,19 @@ void calcularExperiencia(Jugador &jugador, string linea)
         "Atajada",
         "Centro eficaz",
         "Regate",
-        "Reincorporacion",
-        "Tiro a las gradas",
+        "Turo a las gradas",
         "Entrada a destiempo",
         "Insulto al arbitro",
         "Falta",
         "Tarjeta",
         "Mal despeje",
         "Mano al balon",
-        "Cansancio",
-        "Lesion"};
-    for (int h = 0; h < 18; h++)
-    {
-        actuacion = actuaciones[h];
-        for (int i = 0; i < linea.length(); i++)
-        {
-            int j = 0;
-            while (j < actuacion.length() && i + j < linea.length() && linea[i + j] == actuacion[j])
-            {
-                j++;
-            }
-            if (j == actuacion.length() && (i + j == linea.length() || linea[i + j] == ' '))
-            {
-                if (actuacion == "Reincorporacion")
-                {
-                    jugador.estado = "Incorporado";
-                }
-                else if (actuacion == "Lesion")
-                {
-                    jugador.estado = "Lesionado";
-                }
-                else if (actuacion == "Gol")
-                {
-                    jugador.goles++;
-                }
-                if (h < 9)
-                    jugador.experiencia++;
-                else
-                    jugador.experiencia--;
-            }
-        }
-    }
+        "Casancio",
+    };
+
+    archivoJornada.open(jornada);
+
+    archivoJornada.close();
 }
 
 void actuacionJugador(Jugador &jugador, string actuaciones[16], string actuacion)
@@ -775,7 +656,7 @@ void guardarDatosEnArchivo(string archivo, Equipo equipos[], int equiposLongitud
             archivoSalida << equipos[i].jugadores[j].equipo << " " << equipos[i].jugadores[j].nombre << " " << equipos[i].jugadores[j].apellido << " " << equipos[i].jugadores[j].posicion << " " << equipos[i].jugadores[j].experiencia << endl;
         }
     }
-    
+
     archivoSalida << "D" << endl;
     for (int i = 0; i < directoresLongitud; i++)
     {
@@ -810,6 +691,7 @@ int main()
         jugadoresLongitud++;
         equipoJugador = nombreJugador = apellidoJugador = posicionJugador = experienciaJugador = "";
     }
+
     for (int i = 0; i < jugadoresLongitud; i++)
     {
         nuevos[i] = jugadores[i];
@@ -876,20 +758,20 @@ int main()
                 cout << "2. Modificar" << endl;
                 cout << "3. Eliminar" << endl;
                 cout << "4. Listar Todos" << endl;
-                cout << "5. Volver al menu principal" << endl;
-                cout << "Elige una opcion: ";
+                cout << "5. Volver al menú principal" << endl;
+                cout << "Elige una opción: ";
                 cin >> opcion2;
 
                 switch (opcion2)
                 {
                 case 1:
-                    // Codigo para Agregar
+                    // Código para Agregar
                     equipos[equiposLongitud].agregar();
                     equiposLongitud++;
                     break;
                 case 2:
                 {
-                    // Codigo para Modificar
+                    // Código para Modificar
                     equipos->listar(equipos, equiposLongitud);
                     int opcionEquipo = 0;
                     string equipoModificado;
@@ -939,14 +821,14 @@ int main()
                         cout << "2. Mejores Jugadores" << endl;
                         cout << "3. Lesionados" << endl;
                         cout << "4. Los Nuevos" << endl;
-                        cout << "5. Volver al submenu Equipos" << endl;
-                        cout << "Elige una opcion: ";
+                        cout << "5. Volver al submenú Equipos" << endl;
+                        cout << "Elige una opción: ";
                         cin >> opcion3;
 
                         switch (opcion3)
                         {
                         case 1:
-                            // Codigo para Ver Jugadores
+                            // Código para Ver Jugadores
                             while (opcion4 != 5)
                             {
                                 cout << "\nSUBSUBSUBMENU - Jugadores" << endl;
@@ -954,19 +836,19 @@ int main()
                                 cout << "2. Agregar" << endl;
                                 cout << "3. Modificar" << endl;
                                 cout << "4. Eliminar" << endl;
-                                cout << "5. Volver al subsubmenu Listar Todos" << endl;
-                                cout << "Elige una opcion: ";
+                                cout << "5. Volver al subsubmenú Listar Todos" << endl;
+                                cout << "Elige una opción: ";
                                 cin >> opcion4;
 
                                 switch (opcion4)
                                 {
                                 case 1:
-                                    // Codigo para Ver Todos
+                                    // Código para Ver Todos
                                     cout << endl;
                                     equipos[seleccionEquipo].mostrarJugadores();
                                     break;
                                 case 2:
-                                    // Codigo para Agregar
+                                    // Código para Agregar
                                     {
                                         string nombreJugador, apellidoJugador, posicionJugador;
                                         int experienciaJugador;
@@ -978,7 +860,7 @@ int main()
                                         jugadores->agregar(jugadores[jugadoresLongitud], equipos[seleccionEquipo].nombre, nombreJugador, apellidoJugador, posicionJugador, experienciaJugador);
                                         nuevos[jugadoresLongitud] = jugadores[jugadoresLongitud];
                                         jugadoresLongitud++;
-                                    break;
+                                        break;
                                     }
                                 case 3:
                                     // Codigo para Modificar
@@ -990,13 +872,13 @@ int main()
                                         string nuevoDato;
                                         int nuevaExp;
                                         cout << endl;
-                                        
+
                                         jugadorRef = equipos->seleccionarJugador(equipos[seleccionEquipo].jugadores, equipos[seleccionEquipo].cantidadJugadores);
-                                        //Buscar jugador seleccionado en global
+                                        // Buscar jugador seleccionado en global
                                         numRefJugador = jugadorRef.buscarIndiceJugador(jugadores, jugadoresLongitud);
-                                        //Buscar jugador seleccionado en equipo
+                                        // Buscar jugador seleccionado en equipo
                                         numRefEquipo = jugadorRef.buscarIndiceJugador(equipos[seleccionEquipo].jugadores, equipos[seleccionEquipo].cantidadJugadores);
-                                        //Buscar jugador seleccionado en nuevos
+                                        // Buscar jugador seleccionado en nuevos
                                         numRefNuevo = jugadorRef.buscarIndiceJugador(nuevos, jugadoresLongitud);
 
                                         int opcion = 0;
@@ -1008,6 +890,7 @@ int main()
                                             cout << "4) Experiencia: " << jugadorRef.experiencia << endl;
                                             cout << "5) Volver" << endl;
                                             cin >> opcion;
+
                                             switch (opcion)
                                             {
                                             case 1:
@@ -1034,7 +917,6 @@ int main()
                                         break;
                                     }
 
-
                                 case 4:
                                     // Codigo para Eliminar
                                     {
@@ -1043,13 +925,13 @@ int main()
                                         int numRefNuevo;
                                         Jugador jugadorRef;
                                         cout << endl;
-                                        
+
                                         jugadorRef = equipos->seleccionarJugador(equipos[seleccionEquipo].jugadores, equipos[seleccionEquipo].cantidadJugadores);
-                                        //Buscar jugador seleccionado en global
+                                        // Buscar jugador seleccionado en global
                                         numRefJugador = jugadorRef.buscarIndiceJugador(jugadores, jugadoresLongitud);
-                                        //Buscar jugador seleccionado en equipo
+                                        // Buscar jugador seleccionado en equipo
                                         numRefEquipo = jugadorRef.buscarIndiceJugador(equipos[seleccionEquipo].jugadores, equipos[seleccionEquipo].cantidadJugadores);
-                                        //Buscar jugador seleccionado en nuevos
+                                        // Buscar jugador seleccionado en nuevos
                                         numRefNuevo = jugadorRef.buscarIndiceJugador(nuevos, jugadoresLongitud);
 
                                         equipos[seleccionEquipo].eliminarJugador(numRefEquipo);
@@ -1059,11 +941,11 @@ int main()
                                         break;
                                     }
                                 case 5:
-                                    // Regresar al subsubmenu Listar Todos
+                                    // Regresar al subsubmenú Listar Todos
                                     cout << endl;
                                     break;
                                 default:
-                                    cout << "\nOpcion invalida." << endl;
+                                    cout << "\nOpción inválida." << endl;
                                     break;
                                 }
                             }
@@ -1142,8 +1024,13 @@ int main()
                             }
                             break;
                         case 2:
+<<<<<<< HEAD
                             // Codigo para Mostrar Los Mejores Porteros
                             jugadores->actualizarJugadoresOdenados(jugadores, jugadoresOrdenados, jugadoresLongitud);
+=======
+                            // Código para Mostrar Los Mejores Porteros
+                            jugadores->actualizarJugadoresOrdenados(jugadores, jugadoresOrdenados, jugadoresLongitud);
+>>>>>>> 0af676137a6930f35ac1066f34259243b9288d44
                             jugadores->listar(jugadoresOrdenados, "Portero", jugadoresLongitud, false);
                             break;
                         case 3:
@@ -1177,8 +1064,13 @@ int main()
                             }
                             break;
                         case 2:
+<<<<<<< HEAD
                             // Codigo para Mostrar Los Mejores Defensas
                             jugadores->actualizarJugadoresOdenados(jugadores, jugadoresOrdenados, jugadoresLongitud);
+=======
+                            // Código para Mostrar Los Mejores Defensas
+                            jugadores->actualizarJugadoresOrdenados(jugadores, jugadoresOrdenados, jugadoresLongitud);
+>>>>>>> 0af676137a6930f35ac1066f34259243b9288d44
                             jugadores->listar(jugadoresOrdenados, "Defensa", jugadoresLongitud, false);
                             break;
                         case 3:
@@ -1212,8 +1104,13 @@ int main()
                             }
                             break;
                         case 2:
+<<<<<<< HEAD
                             // Codigo para Mostrar Los Mejores Mediocampistas
                             jugadores->actualizarJugadoresOdenados(jugadores, jugadoresOrdenados, jugadoresLongitud);
+=======
+                            // Código para Mostrar Los Mejores Mediocampistas
+                            jugadores->actualizarJugadoresOrdenados(jugadores, jugadoresOrdenados, jugadoresLongitud);
+>>>>>>> 0af676137a6930f35ac1066f34259243b9288d44
                             jugadores->listar(jugadoresOrdenados, "Mediocampista", jugadoresLongitud, false);
                             break;
                         case 3:
@@ -1247,9 +1144,15 @@ int main()
                             }
                             break;
                         case 2:
+<<<<<<< HEAD
                             // Codigo para Mostrar Los Mejores Delanteros
                             jugadores->actualizarJugadoresOdenados(jugadores, jugadoresOrdenados, jugadoresLongitud);
                             jugadores->listar(jugadoresOrdenados, "Delantero", jugadoresLongitud,false);
+=======
+                            // Código para Mostrar Los Mejores Delanteros
+                            jugadores->actualizarJugadoresOrdenados(jugadores, jugadoresOrdenados, jugadoresLongitud);
+                            jugadores->listar(jugadoresOrdenados, "Delantero", jugadoresLongitud, false);
+>>>>>>> 0af676137a6930f35ac1066f34259243b9288d44
                             break;
                         case 3:
                             // Regresar al submenu Jugadores
@@ -1354,26 +1257,18 @@ int main()
                 {
                 case 1:
                 {
-                    // Codigo para Cargar Partidos
+                    // Código para Cargar Partidos
                     string direccionJornada = "";
                     cin >> direccionJornada;
-                    string lineas[100];
-                    int cantidadLineas = 0;
-                    string equipoJugador, nombreJugador, apellidoJugador;
-                    procesarJornada(direccionJornada, lineas, cantidadLineas, equipos, equiposLongitud);
-                    for (int i = 0; i < cantidadLineas; i++)
-                    {
-                        calcularExperiencia(equipos[equipos->buscarEquipo(equipos, equiposLongitud, equipoJugador)].jugadores[equipos[equipos->buscarEquipo(equipos, equiposLongitud, equipoJugador)].buscarJugador(nombreJugador, apellidoJugador)], identificarActuaciones(lineas[i], equipos, equiposLongitud, equipoJugador, nombreJugador, apellidoJugador));
-                        calcularExperiencia(jugadores[jugadores->buscarJugador(jugadores, jugadoresLongitud, nombreJugador, apellidoJugador)], identificarActuaciones(lineas[i], equipos, equiposLongitud, equipoJugador, nombreJugador, apellidoJugador));
-                    }
+
                     break;
                 }
                 case 2:
-                    // Regresar al menu principal
+                    // Regresar al menú principal
                     cout << endl;
                     break;
                 default:
-                    cout << "\nOpcion invalida." << endl;
+                    cout << "\nOpción inválida." << endl;
                     break;
                 }
             }
@@ -1387,6 +1282,18 @@ int main()
         }
         opcion2 = 0; // Reiniciar la opcion del submenu
     }
+<<<<<<< HEAD
     guardarDatosEnArchivo("entrada.in", equipos, equiposLongitud, jugadores, jugadoresLongitud, directores, directoresLongitud);
+=======
+    // jugadores[jugadoresLongitud] = { "Canaimita Patriota", "Javier", "Hernandez", "Defensa", 5, 2, "Incorporado" }; jugadoresLongitud++;
+    // listarJugadores("", jugadores, jugadoresLongitud, true);
+    // guardarDatosEnArchivo("entrada.in", equipos, equiposLongitud, jugadores, jugadoresLongitud, directores, directoresLongitud);
+
+    /*for (int i = 0; i < jugadoresLongitud; i++)
+    {
+        cout << nuevos[i].mostrarDatos() << endl;
+    }*/
+
+>>>>>>> 0af676137a6930f35ac1066f34259243b9288d44
     return 0;
 }
