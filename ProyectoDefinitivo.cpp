@@ -39,24 +39,25 @@ public:
     }
     void listar(Jugador jugadores[], string posicion, int jugadoresLongitud, bool goleadores)
     {
-        for (int i = 0; i < jugadoresLongitud; i++)
+        if (goleadores)
         {
-            if (jugadores[i].estado == "Incorporado")
+            for (int i = 0; i < jugadoresLongitud; i++)
             {
-                // Goleadores
-                if (goleadores)
+                if (jugadores[i].goles > 0 && jugadores[i].estado == "Incorporado")
                 {
-                    if (jugadores[i].goles > 0)
-                    {
-                        cout << jugadores[i].mostrarDatos() << " " << jugadores[i].goles;
-                        if (jugadores[i].goles == 1)
-                            cout << " Gol" << endl;
-                        else
-                            cout << " Goles" << endl;
-                    }
+                    cout << jugadores[i].equipo << " " << jugadores[i].nombre << " " << jugadores[i].apellido << " " << jugadores[i].goles;
+                    if (jugadores[i].goles == 1)
+                        cout << " Gol" << endl;
+                    else
+                        cout << " Goles" << endl;
                 }
-                // Posicion
-                else if (jugadores[i].posicion == posicion)
+            }
+        }
+        else
+        {
+            for (int i = 0; i < jugadoresLongitud; i++)
+            {
+                if (jugadores[i].posicion == posicion && jugadores[i].estado == "Incorporado")
                     cout << jugadores[i].mostrarDatos() << endl;
             }
         }
@@ -182,6 +183,7 @@ public:
             if (equipo == jugadores[i].equipo && nombre == jugadores[i].nombre && apellido == jugadores[i].apellido && posicion == jugadores[i].posicion && experiencia == jugadores[i].experiencia)
                 return i;
         }
+    }
     int buscarJugador(Jugador jugadores[], int cantidadJugadores, string nombre, string apellido)
     {
         for (int i = 0; i < cantidadJugadores; i++)
@@ -380,11 +382,6 @@ public:
             jugadores[i] = jugadores[i + 1];
         }
         cantidadJugadores--;
-    }
-
-    string mostrarDatos()
-    {
-        return nombre + " " + to_string(cantidadJugadores);
     }
     void mostrarJugadores()
     {
@@ -851,21 +848,6 @@ int main()
         nombreDirectorTecnico = apellidoDirectorTecnico = experienciaDirectorTecnico = "";
     }
 
-    // Imprimir Equipos
-    cout << "EQUIPOS" << endl;
-    equipos->listar(equipos, equiposLongitud);
-
-    // Imprimir Jugadores
-    cout << "\nJUGADORES" << endl;
-    for (int i = 0; i < jugadoresLongitud; i++)
-    {
-        cout << jugadores[i].mostrarDatos() << endl;
-    }
-
-    // Imprimir Directores Tecnicos
-    cout << "\nDIRECTORES TÉCNICOS" << endl;
-    directores->listar(directores, directoresLongitud, false);
-
     // MENU PRINCIPAL
     int opcion1 = 0;
     int opcion2 = 0;
@@ -889,7 +871,7 @@ int main()
         case 1: // Equipos
             while (opcion2 != 5)
             {
-                cout << "\nSUBMENÚ - Equipos" << endl;
+                cout << "\nSUBMENU - Equipos" << endl;
                 cout << "1. Agregar" << endl;
                 cout << "2. Modificar" << endl;
                 cout << "3. Eliminar" << endl;
@@ -917,7 +899,7 @@ int main()
                 }
                 case 3:
                 {
-                    // Código para Eliminar
+                    // Codigo para Eliminar
                     equipos->listar(equipos, equiposLongitud);
                     int opcionEquipo = 0;
                     string equipoEliminado;
@@ -937,7 +919,7 @@ int main()
                     break;
                 }
                 case 4:
-                    // Código para la Listar Todos
+                    // Codigo para la Listar Todos
                     int seleccionEquipo;
                     cout << endl;
                     do
@@ -949,11 +931,10 @@ int main()
                         cin >> seleccionEquipo;
                         seleccionEquipo--;
                     } while (seleccionEquipo < 0 || seleccionEquipo >= equiposLongitud);
-                    cout << equipos[seleccionEquipo].nombre << endl;
 
                     while (opcion3 != 5)
                     {
-                        cout << "\nSUBSUBMENÚ - Listar Todos" << endl;
+                        cout << "\nSUBSUBMENU - Listar Todos" << endl;
                         cout << "1. Jugadores" << endl;
                         cout << "2. Mejores Jugadores" << endl;
                         cout << "3. Lesionados" << endl;
@@ -968,7 +949,7 @@ int main()
                             // Codigo para Ver Jugadores
                             while (opcion4 != 5)
                             {
-                                cout << "\nSUBSUBSUBMENÚ - Jugadores" << endl;
+                                cout << "\nSUBSUBSUBMENU - Jugadores" << endl;
                                 cout << "1. Todos" << endl;
                                 cout << "2. Agregar" << endl;
                                 cout << "3. Modificar" << endl;
@@ -1000,7 +981,7 @@ int main()
                                     break;
                                     }
                                 case 3:
-                                    // Código para Modificar
+                                    // Codigo para Modificar
                                     {
                                         int numRefJugador;
                                         int numRefEquipo;
@@ -1055,7 +1036,7 @@ int main()
 
 
                                 case 4:
-                                    // Código para Eliminar
+                                    // Codigo para Eliminar
                                     {
                                         int numRefJugador;
                                         int numRefEquipo;
@@ -1088,37 +1069,40 @@ int main()
                             }
                             break;
                         case 2:
-                            // Código para Ver Mejores Jugadores
+                            // Codigo para Ver Mejores Jugadores
+                            cout << endl;
                             equipos[seleccionEquipo].mostrarMejoresJugadores();
                             break;
                         case 3:
-                            // Código para Ver Lesionados
+                            // Codigo para Ver Lesionados
+                            cout << endl;
                             equipos[seleccionEquipo].mostrarLesionados();
                             break;
                         case 4:
-                            // Código para Ver Los Nuevos
+                            // Codigo para Ver Los Nuevos
+                            cout << endl;
                             nuevos->mostrarNuevos(nuevos, jugadoresLongitud, equipos[seleccionEquipo].nombre);
                             break;
                         case 5:
-                            // Regresar al submenú Equipos
+                            // Regresar al submenu Equipos
                             cout << endl;
                             break;
                         default:
-                            cout << "\nOpción inválida." << endl;
+                            cout << "\nOpcion invalida." << endl;
                             break;
                         }
                         opcion4 = 0;
                     }
                     break;
                 case 5:
-                    // Regresar al menú principal
+                    // Regresar al menu principal
                     cout << endl;
                     break;
                 default:
-                    cout << "\nOpción inválida." << endl;
+                    cout << "\nOpcion invalida." << endl;
                     break;
                 }
-                opcion3 = 0; // Reiniciar la opción del subsubmenú
+                opcion3 = 0; // Reiniciar la opcion del subsubmenu
             }
             break;
         case 2: // Jugadores
@@ -1130,154 +1114,168 @@ int main()
                 cout << "3. Mediocampistas" << endl;
                 cout << "4. Delanteros" << endl;
                 cout << "5. Goleadores" << endl;
-                cout << "6. Volver al menú principal" << endl;
-                cout << "Elige una opción: ";
+                cout << "6. Volver al menu principal" << endl;
+                cout << "Elige una opcion: ";
                 cin >> opcion2;
+
 
                 switch (opcion2)
                 {
                 case 1:
-                    // Código para Mostrar Porteros
+                    // Codigo para Mostrar Porteros
                     while (opcion3 != 3)
                     {
                         cout << "\nSUBSUBMENU - Porteros" << endl;
                         cout << "1. Todos" << endl;
                         cout << "2. Los Mejores" << endl;
-                        cout << "3. Volver al submenú Jugadores" << endl;
-                        cout << "Elige una opción: ";
+                        cout << "3. Volver al submenu Jugadores" << endl;
+                        cout << "Elige una opcion: ";
                         cin >> opcion3;
 
                         switch (opcion3)
                         {
                         case 1:
-                            // Código para Mostrar Todos los Porteros
-                            jugadores->listar(jugadores, "Portero", jugadoresLongitud, false);
+                            // Codigo para Mostrar Todos los Porteros
+                            for (int i = 0; i < equiposLongitud; i++)
+                            {
+                                jugadores->listar(equipos[i].jugadores, "Portero", equipos[i].cantidadJugadores, false);
+                            }
                             break;
                         case 2:
-                            // Código para Mostrar Los Mejores Porteros
+                            // Codigo para Mostrar Los Mejores Porteros
                             jugadores->actualizarJugadoresOdenados(jugadores, jugadoresOrdenados, jugadoresLongitud);
                             jugadores->listar(jugadoresOrdenados, "Portero", jugadoresLongitud, false);
                             break;
                         case 3:
-                            // Regresar al submenú Jugadores
+                            // Regresar al submenu Jugadores
                             cout << endl;
                             break;
                         default:
-                            cout << "\nOpción inválida." << endl;
+                            cout << "\nOpcion invalida." << endl;
                             break;
                         }
                     }
                     break;
                 case 2:
-                    // Código para Mostrar Defensas
+                    // Codigo para Mostrar Defensas
                     while (opcion3 != 3)
                     {
                         cout << "\nSUBSUBMENU - Defensas" << endl;
                         cout << "1. Todos" << endl;
                         cout << "2. Los Mejores" << endl;
-                        cout << "3. Volver al submenú Jugadores" << endl;
-                        cout << "Elige una opción: ";
+                        cout << "3. Volver al submenu Jugadores" << endl;
+                        cout << "Elige una opcion: ";
                         cin >> opcion3;
 
                         switch (opcion3)
                         {
                         case 1:
-                            // Código para Mostrar Todos los Defensas
-                            jugadores->listar(jugadores, "Defensa", jugadoresLongitud, false);
+                            // Codigo para Mostrar Todos los Defensas
+                            for (int i = 0; i < equiposLongitud; i++)
+                            {
+                                jugadores->listar(equipos[i].jugadores, "Defensa", equipos[i].cantidadJugadores, false);
+                            }
                             break;
                         case 2:
-                            // Código para Mostrar Los Mejores Defensas
+                            // Codigo para Mostrar Los Mejores Defensas
                             jugadores->actualizarJugadoresOdenados(jugadores, jugadoresOrdenados, jugadoresLongitud);
                             jugadores->listar(jugadoresOrdenados, "Defensa", jugadoresLongitud, false);
                             break;
                         case 3:
-                            // Regresar al submenú Jugadores
+                            // Regresar al submenu Jugadores
                             cout << endl;
                             break;
                         default:
-                            cout << "\nOpción inválida." << endl;
+                            cout << "\nOpcion invalida." << endl;
                             break;
                         }
                     }
                     break;
                 case 3:
-                    // Código para Mostrar Mediocampistas
+                    // Codigo para Mostrar Mediocampistas
                     while (opcion3 != 3)
                     {
                         cout << "\nSUBSUBMENU - Mediocampistas" << endl;
                         cout << "1. Todos" << endl;
                         cout << "2. Los Mejores" << endl;
-                        cout << "3. Volver al submenú Jugadores" << endl;
-                        cout << "Elige una opción: ";
+                        cout << "3. Volver al submenu Jugadores" << endl;
+                        cout << "Elige una opcion: ";
                         cin >> opcion3;
 
                         switch (opcion3)
                         {
                         case 1:
-                            // Código para Mostrar Todos los Mediocampistas
-                            jugadores->listar(jugadores, "Mediocampista", jugadoresLongitud, false);
+                            // Codigo para Mostrar Todos los Mediocampistas
+                            for (int i = 0; i < equiposLongitud; i++)
+                            {
+                                jugadores->listar(equipos[i].jugadores, "Mediocampista", equipos[i].cantidadJugadores, false);
+                            }
                             break;
                         case 2:
-                            // Código para Mostrar Los Mejores Mediocampistas
+                            // Codigo para Mostrar Los Mejores Mediocampistas
                             jugadores->actualizarJugadoresOdenados(jugadores, jugadoresOrdenados, jugadoresLongitud);
                             jugadores->listar(jugadoresOrdenados, "Mediocampista", jugadoresLongitud, false);
                             break;
                         case 3:
-                            // Regresar al submenú Jugadores
+                            // Regresar al submenu Jugadores
                             cout << endl;
                             break;
                         default:
-                            cout << "\nOpción inválida." << endl;
+                            cout << "\nOpcion invalida." << endl;
                             break;
                         }
                     }
                     break;
                 case 4:
-                    // Código para la Mostrar Delanteros
+                    // Codigo para la Mostrar Delanteros
                     while (opcion3 != 3)
                     {
                         cout << "\nSUBSUBMENU - Delanteros" << endl;
                         cout << "1. Todos" << endl;
                         cout << "2. Los Mejores" << endl;
-                        cout << "3. Volver al submenú Jugadores" << endl;
-                        cout << "Elige una opción: ";
+                        cout << "3. Volver al submenu Jugadores" << endl;
+                        cout << "Elige una opcion: ";
                         cin >> opcion3;
 
                         switch (opcion3)
                         {
                         case 1:
-                            // Código para Mostrar Todos los Delanteros
-                            jugadores->listar(jugadores, "Delantero", jugadoresLongitud, false);
+                            // Codigo para Mostrar Todos los Delanteros
+                            for (int i = 0; i < equiposLongitud; i++)
+                            {
+                                jugadores->listar(equipos[i].jugadores, "Delantero", equipos[i].cantidadJugadores, false);
+                            }
                             break;
                         case 2:
-                            // Código para Mostrar Los Mejores Delanteros
+                            // Codigo para Mostrar Los Mejores Delanteros
                             jugadores->actualizarJugadoresOdenados(jugadores, jugadoresOrdenados, jugadoresLongitud);
                             jugadores->listar(jugadoresOrdenados, "Delantero", jugadoresLongitud,false);
                             break;
                         case 3:
-                            // Regresar al submenú Jugadores
+                            // Regresar al submenu Jugadores
                             cout << endl;
                             break;
                         default:
-                            cout << "\nOpción inválida." << endl;
+                            cout << "\nOpcion invalida." << endl;
                             break;
                         }
                     }
                     break;
                 case 5:
-                    // Código para la Mostrar Goleadores
+                    // Codigo para la Mostrar Goleadores
                     jugadores->actualizarJugadoresGoleadores(jugadores, jugadoresGoleadores, jugadoresLongitud);
+                    cout << "se actualizo " << endl;
                     jugadores->listar(jugadoresGoleadores, "", jugadoresLongitud, true);
                     break;
                 case 6:
-                    // Regresar al menú principal
+                    // Regresar al menu principal
                     cout << endl;
                     break;
                 default:
-                    cout << "\nOpción inválida." << endl;
+                    cout << "\nOpcion invalida." << endl;
                     break;
                 }
-                opcion3 = 0; // Reiniciar la opción del subsubmenú
+                opcion3 = 0; // Reiniciar la opcion del subsubmenu
             }
             break;
         case 3: // Directores Tecnicos
@@ -1285,33 +1283,34 @@ int main()
             {
                 cout << "\nSUBMENU - Directores Tecnicos" << endl;
                 cout << "1. Todos" << endl;
-                cout << "2. Los más experimentados" << endl;
+                cout << "2. Los mas experimentados" << endl;
                 cout << "3. Agregar" << endl;
                 cout << "4. Modificar" << endl;
                 cout << "5. Eliminar" << endl;
-                cout << "6. Volver al menú principal" << endl;
-                cout << "Elige una opción: ";
+                cout << "6. Volver al menu principal" << endl;
+                cout << "Elige una opcion: ";
                 cin >> opcion2;
+                cout << endl;
 
                 switch (opcion2)
                 {
                 case 1:
-                    // Código para Mostrar Todos
+                    // Codigo para Mostrar Todos
                     directores->listar(directores, directoresLongitud, false);
                     break;
                 case 2:
-                    // Código para Mostrar Los mas experimentados
+                    // Codigo para Mostrar Los mas experimentados
                     directores->ordenarPorExperiencia(directores, 0, directoresLongitud);
                     directores->listar(directores, directoresLongitud, false);
                     break;
                 case 3:
-                    // Código para Agregar
+                    // Codigo para Agregar
                     directores->agregar(directores[directoresLongitud]);
                     directoresLongitud++;
                     break;
                 case 4:
                 {
-                    // Código para Modificar
+                    // Codigo para Modificar
                     int opcionDirector = 0;
                     do
                     {
@@ -1324,7 +1323,7 @@ int main()
                 }
                 case 5:
                 {
-                    // Código para Eliminar
+                    // Codigo para Eliminar
                     directores->listar(directores, directoresLongitud, true);
                     int opcionDirector = 0;
                     cin >> opcionDirector;
@@ -1333,11 +1332,11 @@ int main()
                     break;
                 }
                 case 6:
-                    // Regresar al menú principal
+                    // Regresar al menu principal
                     cout << endl;
                     break;
                 default:
-                    cout << "\nOpción inválida." << endl;
+                    cout << "\nOpcion invalida." << endl;
                     break;
                 }
             }
@@ -1347,8 +1346,8 @@ int main()
             {
                 cout << "\nSUBMENU - Partidos" << endl;
                 cout << "1. Cargar Partidos" << endl;
-                cout << "2. Volver al menú principal" << endl;
-                cout << "Elige una opción: ";
+                cout << "2. Volver al menu principal" << endl;
+                cout << "Elige una opcion: ";
                 cin >> opcion2;
 
                 switch (opcion2)
@@ -1383,19 +1382,11 @@ int main()
             cout << "Saliendo del programa. ¡Hasta luego!" << endl;
             break;
         default:
-            cout << "Opción inválida." << endl;
+            cout << "Opcion invalida." << endl;
             break;
         }
-        opcion2 = 0; // Reiniciar la opción del submenú
+        opcion2 = 0; // Reiniciar la opcion del submenu
     }
-    // jugadores[jugadoresLongitud] = { "Canaimita Patriota", "Javier", "Hernandez", "Defensa", 5, 2, "Incorporado" }; jugadoresLongitud++;
-    // listarJugadores("", jugadores, jugadoresLongitud, true);
-    //guardarDatosEnArchivo("entrada.in", equipos, equiposLongitud, jugadores, jugadoresLongitud, directores, directoresLongitud);
-    
-    /*for (int i = 0; i < jugadoresLongitud; i++)
-    {
-        cout << nuevos[i].mostrarDatos() << endl;
-    }*/
-    
+    guardarDatosEnArchivo("entrada.in", equipos, equiposLongitud, jugadores, jugadoresLongitud, directores, directoresLongitud);
     return 0;
 }
